@@ -1,9 +1,12 @@
 import PageTitle from '@/components/UI/PageTitle';
+import SectionContainer from '@/components/UI/SectionContainer';
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <PageTitle>Echocode: Digital Studio</PageTitle>
-    </div>
+    <section className="py-50">
+      <SectionContainer>
+        <PageTitle>Echocode: Digital Studio</PageTitle>
+      </SectionContainer>
+    </section>
   );
 }

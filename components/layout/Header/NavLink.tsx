@@ -1,5 +1,5 @@
-import Link from "next/link";
-import { ReactNode } from "react";
+import Link from 'next/link';
+import { ReactNode } from 'react';
 
 interface NavLinkProps {
   children: ReactNode;
@@ -13,11 +13,11 @@ const NavLink = ({ children, link }: NavLinkProps) => {
       data-text={children}
       className="relative font-main uppercase text-main-base-link
       bg-main-gradient bg-clip-text bg-transparent
-    transition-all duration-300
+    transition-all duration-main 
     hover:text-transparent hover:bg-clip-text 
     after:absolute after:left-0 after:-bottom-[-2px] after:h-px after:w-full 
     after:bg-main-gradient after:opacity-0  after:transition-opacity 
-    after:duration-300 hover:after:opacity-100"
+    after:duration-main hover:after:opacity-100"
     >
       {children}
     </Link>

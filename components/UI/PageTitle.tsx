@@ -21,7 +21,7 @@ const PageTitle = ({ children }: { children: string }) => {
       variants={container}
       initial="hidden"
       animate="visible"
-      className="text-title-6xl font-title"
+      className="text-title-4xl font-title text-center"
     >
       {children.split('').map((char, i) => (
         <motion.span key={i} variants={letter} className="inline-block">

@@ -3,9 +3,11 @@ import type { Metadata } from 'next';
 
 import { poppins, wadik, inter } from '@/styles/fonts/fonts';
 
-import './globals.css';
+// import Header from '@/components/layout/Header/Header';
+// import Footer from '@/components/layout/Footer/Footer';
 // import HeroBackground from "@/components/UI/HeroBackground";
-import Header from '@/components/layout/Header/Header';
+
+import './globals.css';
 
 export const metadata: Metadata = {
   title: 'Echocode',
@@ -25,6 +27,7 @@ export default function RootLayout({
         {/* <HeroBackground /> */}
         {/* <Header /> */}
         <main>{children}</main>
+        {/* <Footer /> */}
       </body>
     </html>
   );
