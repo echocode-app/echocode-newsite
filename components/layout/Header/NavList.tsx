@@ -1,12 +1,19 @@
 import DropdownList from './DropdownList';
-import NavLink from './NavLink';
+import NavLink, { navLinkBaseClass } from './NavLink';
 
 const NavList = () => {
   return (
     <nav>
       <ul className="hidden md:flex gap-4 xl:gap-8">
         <li className="relative group z-100">
-          <NavLink link={'/service-direction'}>Service Directions</NavLink>
+          <button
+            type="button"
+            data-text="Service Directions"
+            aria-haspopup="menu"
+            className={navLinkBaseClass}
+          >
+            Service Directions
+          </button>
           <DropdownList />
         </li>
         <li>

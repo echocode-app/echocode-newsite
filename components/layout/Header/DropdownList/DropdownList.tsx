@@ -19,7 +19,9 @@ const DropdownList = () => {
      border-gray10 bg-black/15 backdrop-blur-[26px]"
       >
         <li>
-          <DropdownLink link="/service-direction">Mobile Development</DropdownLink>
+          <DropdownLink link="/service-direction/mobile-development">
+            Mobile Development
+          </DropdownLink>
         </li>
         <li>
           <DropdownLink link="/service-direction/web-development">Web Development</DropdownLink>
@@ -28,7 +30,7 @@ const DropdownList = () => {
           <DropdownLink link="/service-direction/game-development">Game Development</DropdownLink>
         </li>
         <li>
-          <DropdownLink link="/service-direction/i-gaming">iGaming</DropdownLink>
+          <DropdownLink link="/service-direction/igaming">iGaming</DropdownLink>
         </li>
         <li>
           <DropdownLink link="/service-direction/design">
@@ -36,7 +38,7 @@ const DropdownList = () => {
           </DropdownLink>
         </li>
         <li>
-          <DropdownLink link="/service-direction/q-a">
+          <DropdownLink link="/service-direction/qa">
             <span className="block w-15 text-center">QA</span>
           </DropdownLink>
         </li>
