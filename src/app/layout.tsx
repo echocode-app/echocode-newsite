@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 import { poppins, wadik, inter } from '@/styles/fonts/fonts';
 
@@ -20,6 +21,7 @@ export default function RootLayout({
         className={`${poppins.variable} ${inter.variable} ${wadik.variable} antialiased relative`}
       >
         {children}
+        <SpeedInsights />
       </body>
     </html>
   );
