@@ -1,12 +1,12 @@
-import SectionContainer from "@/components/UI/SectionContainer";
+import SectionContainer from '@/components/UI/SectionContainer';
 
 const Partnership = () => {
   return (
-    <>
-      <section>
-        <SectionContainer>Partnership</SectionContainer>
-      </section>
-    </>
+    <section className="py-60">
+      <SectionContainer>
+        <h1 className="font-title text-title-4xl text-center">Partnership</h1>
+      </SectionContainer>
+    </section>
   );
 };
 

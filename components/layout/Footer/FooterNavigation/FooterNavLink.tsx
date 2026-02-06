@@ -9,7 +9,10 @@ interface FooterNavLinkProps {
 const FooterNavLink = ({ children, link }: FooterNavLinkProps) => {
   return (
     <li>
-      <Link href={link} className="block w-full text-main-base text-base-gray">
+      <Link
+        href={link}
+        className="block w-full text-main-base text-base-gray hover:text-accent duration-main"
+      >
         {children}
       </Link>
     </li>

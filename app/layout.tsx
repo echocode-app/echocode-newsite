@@ -3,8 +3,8 @@ import type { Metadata } from 'next';
 
 import { poppins, wadik, inter } from '@/styles/fonts/fonts';
 
-// import Header from '@/components/layout/Header/Header';
-// import Footer from '@/components/layout/Footer/Footer';
+import Header from '@/components/layout/Header/Header';
+import Footer from '@/components/layout/Footer/Footer';
 // import HeroBackground from "@/components/UI/HeroBackground";
 
 import './globals.css';
@@ -25,9 +25,9 @@ export default function RootLayout({
         className={`${poppins.variable} ${inter.variable} ${wadik.variable} antialiased relative`}
       >
         {/* <HeroBackground /> */}
-        {/* <Header /> */}
+        <Header />
         <main>{children}</main>
-        {/* <Footer /> */}
+        <Footer />
       </body>
     </html>
   );

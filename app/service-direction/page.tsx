@@ -1,12 +1,12 @@
-import SectionContainer from "@/components/UI/SectionContainer";
+import SectionContainer from '@/components/UI/SectionContainer';
 
 const ServiceDirection = () => {
   return (
-    <>
-      <section>
-        <SectionContainer>Service Direction</SectionContainer>
-      </section>
-    </>
+    <section className="py-60">
+      <SectionContainer>
+        <h1 className="font-title text-title-4xl text-center">Mobile Development</h1>
+      </SectionContainer>
+    </section>
   );
 };
 

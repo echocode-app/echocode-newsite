@@ -6,7 +6,7 @@ const LanguageSwitcher = () => {
   return (
     <button
       className="flex items-center gap-2 xl:ml-14.25 px-3 py-1.5 shadow-main
-       border-accent border-2 rounded-primary cursor-pointer"
+       border-accent border-2 rounded-primary cursor-pointer z-10"
     >
       <div className="relative w-6 h-5">
         <Image src={globe} alt="Globe" fill />

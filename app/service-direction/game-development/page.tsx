@@ -1,13 +1,13 @@
 import SectionContainer from '@/components/UI/SectionContainer';
 
-const Portfolio = () => {
+const GameDevelopment = () => {
   return (
     <section className="py-60">
       <SectionContainer>
-        <h1 className="font-title text-title-4xl text-center">Portfolio</h1>
+        <h1 className="font-title text-title-4xl text-center">Game Development</h1>
       </SectionContainer>
     </section>
   );
 };
 
-export default Portfolio;
+export default GameDevelopment;
