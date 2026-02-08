@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
 import NavList from './NavList';
+import MobileMenu from './MobileMenu';
 
 import LanguageSwitcher from '@/components/I18n/LanguageSwitcher';
 import Logo from '@/components/UI/Logo';
@@ -11,7 +12,7 @@ const Header = () => {
     <header
       className="fixed py-11  w-full z-100 before:absolute before:inset-0
     before:bg-header-gradient
-    before:backdrop-blur-md
+    before:backdrop-blur-[6px]
     before:z-0"
     >
       <SectionContainer>
@@ -20,10 +21,13 @@ const Header = () => {
             <Logo />
             <p className="hidden xl:block font-title text-title-xs">Echocode.app</p>
           </Link>
-          <div>
+          <div className="hidden md:block">
             <NavList />
           </div>
-          <LanguageSwitcher />
+          <MobileMenu />
+          <div className="z-10 hidden md:block">
+            <LanguageSwitcher />
+          </div>
         </div>
       </SectionContainer>
     </header>

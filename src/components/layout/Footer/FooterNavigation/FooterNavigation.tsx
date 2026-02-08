@@ -22,7 +22,7 @@ const FooterNavigation = () => (
             STUDIO
           </h3>
           <ul className="flex flex-col gap-1 w-36.5 lg:w-51">
-            <FooterNavLink link="/service-direction">Services</FooterNavLink>
+            <FooterNavLink link="/service-direction/mobile-development">Services</FooterNavLink>
             <FooterNavLink link="/portfolio">Portfolio</FooterNavLink>
             <FooterNavLink link="/partnership">Partnership</FooterNavLink>
             <FooterNavLink link="/career">Careers</FooterNavLink>

@@ -4,7 +4,7 @@ import NavLink, { navLinkBaseClass } from './NavLink';
 const NavList = () => {
   return (
     <nav>
-      <ul className="hidden md:flex gap-4 xl:gap-8">
+      <ul className="flex gap-4 xl:gap-8">
         <li className="relative group z-100">
           <button
             type="button"

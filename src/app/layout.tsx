@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 import { poppins, wadik, inter } from '@/styles/fonts/fonts';
 

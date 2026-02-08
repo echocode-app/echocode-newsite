@@ -1,9 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import telegramIcon from '@/public/UI/social-icons/telegram.svg';
-import instaIcon from '@/public/UI/social-icons/insta.svg';
-
 const SocailLinks = () => {
   return (
     <ul className="flex justify-center gap-2 lg:justify-end">
@@ -14,7 +11,7 @@ const SocailLinks = () => {
           className="flex justify-center items-center w-10 h-10 bg-base-gray rounded-full"
         >
           <div className="relative w-4.5 h-3.5">
-            <Image src={telegramIcon} fill alt="Telegram" />
+            <Image src="/UI/social-icons/telegram.svg" fill alt="Telegram" />
           </div>
         </Link>
       </li>
@@ -25,7 +22,7 @@ const SocailLinks = () => {
           className="flex justify-center items-center w-10 h-10 bg-base-gray rounded-full"
         >
           <div className="relative w-4.5 h-4.5">
-            <Image src={instaIcon} fill alt="Instagram" />
+            <Image src="/UI/social-icons/insta.svg" fill alt="Instagram" />
           </div>
         </Link>
       </li>

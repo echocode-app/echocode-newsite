@@ -1,5 +1,5 @@
 import Arrow from './Arrow';
-import FooterNavigation from './FooterNavigation/FooterNavigation';
+import FooterNavigation from './FooterNavigation';
 import License from './License';
 
 const Footer = () => {

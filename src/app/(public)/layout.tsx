@@ -1,6 +1,6 @@
-import Header from '@/components/layout/Header/Header';
-import Footer from '@/components/layout/Footer/Footer';
-// import HeroBackground from "@/components/UI/HeroBackground";
+import Header from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer';
+import HeroBackground from '@/components/UI/HeroBackground';
 
 export default function RootLayout({
   children,
@@ -9,7 +9,7 @@ export default function RootLayout({
 }>) {
   return (
     <>
-      {/* <HeroBackground /> */}
+      <HeroBackground />
       <Header />
       <main>{children}</main>
       <Footer />
