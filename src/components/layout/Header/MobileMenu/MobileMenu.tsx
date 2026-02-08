@@ -20,10 +20,26 @@ const MobileMenu = () => {
     setIsOpenDropdown(false);
   };
 
+  const handleToggleMenu = () => {
+    setIsOpen((prev) => {
+      const next = !prev;
+      if (!next) {
+        setIsOpenDropdown(false);
+      }
+      return next;
+    });
+  };
+
   return (
     <>
-      <button onClick={() => setIsOpen(!isOpen)} className="md:hidden relative w-10 h-10">
-        <Image src={'/UI/burger-menu.svg'} fill alt="Menu" />
+      <button
+        onClick={handleToggleMenu}
+        className={`md:hidden relative w-10 h-10 z-400 ${isOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+        aria-label="Open menu"
+      >
+        <span className="absolute inset-0 flex items-center justify-center transition-opacity duration-main">
+          <Image src={'/UI/burger-menu.svg'} width={40} height={40} alt="Menu" />
+        </span>
       </button>
 
       <div
@@ -33,17 +49,24 @@ const MobileMenu = () => {
           transition-all duration-main overflow-x-scroll
          `}
       >
-        <div className="flex justify-between mb-7">
+        <div className="flex items-center justify-between mb-7">
           <Link href={'/'} onClick={handleCloseAll}>
             <Logo />
           </Link>
-          <LanguageSwitcher />
+          <button onClick={handleToggleMenu} className="relative w-10 h-10" aria-label="Close menu">
+            <span className="absolute inset-0 flex items-center justify-center">
+              <Image src={'/UI/close.svg'} width={30} height={30} alt="Close" />
+            </span>
+          </button>
         </div>
         <MobaileNavList
           onClose={handleCloseAll}
           isOpenDropdown={isOpenDropdown}
           setIsOpenDropdown={setIsOpenDropdown}
         />
+        <div className="mt-8 flex justify-end">
+          <LanguageSwitcher />
+        </div>
       </div>
     </>
   );
