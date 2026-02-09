@@ -12,8 +12,8 @@ export default function Home() {
           >
             Echocode: Digital Studio
           </h1>
-          <p className="mb-4.5 text-[10px] text-center md:text-main-base md:mb-9">
-            Accelerate your digital products with expert IT development.
+          <p className="mb-4.5 text-[10px] max-w-84 mx-auto md:max-w-full md:mx-0 text-center md:text-main-base md:mb-9">
+            Engineering high-scale digital ecosystems. From concept to market dominance.
           </p>
           <OrderButton />
         </SectionContainer>

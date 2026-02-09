@@ -1,6 +1,7 @@
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import HeroBackground from '@/components/UI/HeroBackground';
+// import ContactUsBtn from '@/components/ContactUsModal/ContactUsBtn';
 
 export default function RootLayout({
   children,
@@ -12,6 +13,7 @@ export default function RootLayout({
       <HeroBackground />
       <Header />
       <main>{children}</main>
+      {/* <ContactUsBtn /> */}
       <Footer />
     </>
   );

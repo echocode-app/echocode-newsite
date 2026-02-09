@@ -8,7 +8,13 @@ const HeroBackground = () => {
     translate-x-[-50%] backdrop-blur-[10px] -z-10"
     >
       <div className="relative w-full h-full ">
-        <Image src={'/UI/hero-bg.png'} alt="bg" priority fill className="object-cover" />
+        <Image
+          src={'/UI/backgrounds/hero-bg.png'}
+          alt="bg"
+          priority
+          fill
+          className="object-cover"
+        />
       </div>
     </div>
   );

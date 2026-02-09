@@ -16,12 +16,12 @@ const FooterNavigation = () => (
           engineered for peak performance.
         </p>
       </div>
-      <div className="flex gap-4 mb-8 md:mb-0">
+      <div className="flex justify-between sm:justify-start gap-4 mb-8 md:mb-0">
         <div>
           <h3 className="mb-6 font-title text-[10px] text-base-gray opacity-65 tracking-[0.4px] uppercase">
             STUDIO
           </h3>
-          <ul className="flex flex-col gap-1 w-36.5 lg:w-51">
+          <ul className="flex flex-col gap-1 w-24 sm:w-36.5 lg:w-51">
             <FooterNavLink link="/service-direction/mobile-development">Services</FooterNavLink>
             <FooterNavLink link="/portfolio">Portfolio</FooterNavLink>
             <FooterNavLink link="/partnership">Partnership</FooterNavLink>
