@@ -43,13 +43,13 @@ const MobileNavList = ({ onClose, isOpenDropdown, setIsOpenDropdown }: MobileNav
         <NavLink link="/portfolio">Portfolio</NavLink>
       </li>
       <li onClick={onClose}>
+        <NavLink link="/partnership">Partnership</NavLink>
+      </li>
+      <li onClick={onClose}>
         <NavLink link="/team">Team</NavLink>
       </li>
       <li onClick={onClose}>
         <NavLink link="/career">Career</NavLink>
-      </li>
-      <li onClick={onClose}>
-        <NavLink link="/partnership">Partnership</NavLink>
       </li>
     </ul>
   );

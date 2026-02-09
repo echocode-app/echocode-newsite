@@ -20,13 +20,13 @@ const NavList = () => {
           <NavLink link={'/portfolio'}>Portfolio</NavLink>
         </li>
         <li>
+          <NavLink link={'/partnership'}>partnership</NavLink>
+        </li>
+        <li>
           <NavLink link={'/team'}>Team</NavLink>
         </li>
         <li>
           <NavLink link={'/career'}>career</NavLink>
-        </li>
-        <li>
-          <NavLink link={'/partnership'}>partnership</NavLink>
         </li>
       </ul>
     </nav>
