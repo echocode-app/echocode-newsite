@@ -1,7 +1,10 @@
+import { Suspense } from 'react';
+
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import HeroBackground from '@/components/UI/HeroBackground';
-// import ContactUsBtn from '@/components/ContactUsModal/ContactUsBtn';
+import ContactUsBtn from '@/components/Modals/ContactUsModal/ContactUsBtn';
+import ModalPortal from '@/components/Modals/ModalPortal';
 
 export default function RootLayout({
   children,
@@ -10,10 +13,15 @@ export default function RootLayout({
 }>) {
   return (
     <>
-      <HeroBackground />
-      <Header />
-      <main>{children}</main>
-      {/* <ContactUsBtn /> */}
+      <div className="relative">
+        <HeroBackground />
+        <Header />
+        <main>{children}</main>
+        <ContactUsBtn />
+        <Suspense fallback={null}>
+          <ModalPortal />
+        </Suspense>
+      </div>
       <Footer />
     </>
   );
