@@ -4,7 +4,7 @@ import License from './License';
 
 const Footer = () => {
   return (
-    <footer className="pt-10 pb-6">
+    <footer className="pt-10 pb-6 border-t border-accent">
       <div className="max-w-318.5 mx-auto px-4 md:px-8 ">
         <div className="mb-4 md:mb-12 md:flex md:justify-between md:items-center">
           <h2 className="font-extra font-extrabold text-[40px] max-w-115 lg:max-w-full leading-none">
