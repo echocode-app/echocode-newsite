@@ -1,13 +1,23 @@
 'use client';
 
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 
 export default function ContactUsBtn() {
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   const openModal = () => {
-    router.push('/?modal=open');
+    // if (!pathname) {
+    //   router.push('/?modal=open');
+    //   return;
+    // }
+
+    if (!searchParams) return;
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('modal', 'open');
+    router.replace(`${pathname}?${params.toString()}`);
   };
 
   return (

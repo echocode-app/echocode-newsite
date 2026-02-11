@@ -17,8 +17,8 @@ export default function RootLayout({
         <HeroBackground />
         <Header />
         <main>{children}</main>
-        <ContactUsBtn />
         <Suspense fallback={null}>
+          <ContactUsBtn />
           <ModalPortal />
         </Suspense>
       </div>
