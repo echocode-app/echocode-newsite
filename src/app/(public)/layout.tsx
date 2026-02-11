@@ -3,8 +3,8 @@ import { Suspense } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import HeroBackground from '@/components/UI/HeroBackground';
-import ContactUsBtn from '@/components/modals/ContactUsModal/ContactUsBtn';
-import ModalPortal from '@/components/modals/ModalPortal';
+import ContactUsBtn from '@/components/modals-temp/ContactUsModal/ContactUsBtn';
+import ModalPortal from '@/components/modals-temp/ModalPortal';
 
 export default function RootLayout({
   children,

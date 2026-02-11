@@ -1,7 +1,8 @@
 import { ReactNode } from 'react';
 import Footer from '../layout/Footer';
 import Header from '../layout/Header';
-import ContactUsBtn from '../modals/ContactUsModal/ContactUsBtn';
+import ContactUsBtn from '../modals-temp/ContactUsModal/ContactUsBtn';
+// import ContactUsBtn from '../modals/ContactUsModal';
 
 interface ErrorLayoutProps {
   children: ReactNode;
