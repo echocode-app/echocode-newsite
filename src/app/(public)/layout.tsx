@@ -1,28 +1,29 @@
-import { Suspense } from 'react';
+import { ReactNode } from 'react';
 
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import HeroBackground from '@/components/UI/HeroBackground';
-import ContactUsBtn from '@/components/modals-temp/ContactUsModal/ContactUsBtn';
-import ModalPortal from '@/components/modals-temp/ModalPortal';
+import ContactUsBtn from '@/components/modals/ContactUsModal/ContactUsBtn';
 
-export default function RootLayout({
+const PublicLayout = ({
   children,
+  modal,
 }: Readonly<{
-  children: React.ReactNode;
-}>) {
+  children: ReactNode;
+  modal: ReactNode;
+}>) => {
   return (
     <>
       <div className="relative">
         <HeroBackground />
         <Header />
         <main>{children}</main>
-        <Suspense fallback={null}>
-          <ContactUsBtn />
-          <ModalPortal />
-        </Suspense>
+        {modal}
+        <ContactUsBtn />
       </div>
       <Footer />
     </>
   );
-}
+};
+
+export default PublicLayout;
