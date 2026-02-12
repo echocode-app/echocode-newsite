@@ -10,7 +10,7 @@ const BasedOnVideo = () => {
   return (
     <div
       className="relative 
-     w-full h-full mb-12.5 overflow-hidden bg-black rounded-secondary"
+     w-full h-full sm:min-h-50.5 md:min-h-99 lg:min-h-140.75 mb-12.5 overflow-hidden bg-black rounded-secondary"
     >
       {!loaded && <VideoLoader />}
 

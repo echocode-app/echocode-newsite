@@ -75,8 +75,8 @@
   );
   --background-image-video-gradient:
     linear-gradient(180deg, rgba(0, 0, 0, 0) 80.21%, #000 100%),
-    linear-gradient(270deg, rgba(0, 0, 0, 0) 74.9%, #000 93.3%),
-    linear-gradient(90deg, rgba(0, 0, 0, 0) 76.75%, #000 93.45%);
+    linear-gradient(270deg, rgba(0, 0, 0, 0) 74.9%, #000 97%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0) 76.75%, #000 97%);
 
   --background-header-gradient: linear-gradient(
     180deg,
