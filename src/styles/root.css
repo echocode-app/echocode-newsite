@@ -73,6 +73,10 @@
     #fac175 50%,
     #8b5cf6 100%
   );
+  --background-image-video-gradient:
+    linear-gradient(180deg, rgba(0, 0, 0, 0) 80.21%, #000 100%),
+    linear-gradient(270deg, rgba(0, 0, 0, 0) 74.9%, #000 97%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0) 76.75%, #000 97%);
 
   --background-header-gradient: linear-gradient(
     180deg,
@@ -113,5 +117,9 @@
 
   .bg-header-gradient {
     background: var(--background-header-gradient);
+  }
+
+  .bg-video-gradient {
+    background: var(--background-image-video-gradient);
   }
 }

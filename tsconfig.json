@@ -33,7 +33,8 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts",
-    "src/app/(public)/not-found.js"
+    "src/app/(public)/not-found.js",
+    "src/components/sections/home/BasedOnSection"
   ],
   "exclude": ["node_modules"]
 }

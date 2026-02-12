@@ -1,26 +1,15 @@
-import AnimationLine from '@/components/home/AnimationLine/AnimationLine';
-import OrderButton from '@/components/UI/OrderButton';
-import SectionContainer from '@/components/UI/SectionContainer';
+import AnimationLine from '@/components/common/AnimationLine/AnimationLine';
+import BasedOnSection from '@/components/sections/home/BasedOnSection';
+import HeroSection from '@/components/sections/home/HeroSection';
 
-export default function Home() {
+const HomePage = () => {
   return (
     <>
-      <section className="pt-45 pb-31.75 md:pt-41.5 md:pb-13.5">
-        <SectionContainer>
-          <h1
-            className="max-w-85.5 mx-auto mb-4 font-title text-title-3xl text-center 
-        md:max-w-170 md:text-title-6xl"
-          >
-            Echocode: Digital Studio
-          </h1>
-          <p className="mb-4.5 text-[10px] max-w-84 mx-auto md:max-w-full md:mx-0 text-center md:text-main-base md:mb-9">
-            Engineering high-scale digital ecosystems. From concept to market dominance.
-          </p>
-
-          <OrderButton />
-        </SectionContainer>
-      </section>
+      <HeroSection />
       <AnimationLine />
+      <BasedOnSection />
     </>
   );
-}
+};
+
+export default HomePage;
