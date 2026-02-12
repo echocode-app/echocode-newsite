@@ -15,9 +15,7 @@ const BasedOnSection = () => {
           We don’t just code; we build digital power. Our team blends deep tech expertise with
           strategy to deliver products that outperform the market and redefine user experience.
         </p>
-      </SectionContainer>
-      <BasedOnVideo />
-      <SectionContainer>
+        <BasedOnVideo />
         <MetricsList />
       </SectionContainer>
     </section>

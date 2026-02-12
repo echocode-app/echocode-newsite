@@ -9,22 +9,26 @@ const BasedOnVideo = () => {
 
   return (
     <div
-      className="relative w-full h-full md:mb-12.5 
-     bg-black overflow-hidden"
+      className="relative 
+     w-full h-full mb-12.5 overflow-hidden bg-black rounded-secondary"
     >
       {!loaded && <VideoLoader />}
+
       <video
         loop
         autoPlay
         muted
+        playsInline
         preload="auto"
-        className={`w-full h-full duration-main transition-opacity
-          ${loaded ? 'opacity-100' : 'opacity-0'}`}
         onCanPlay={() => setLoaded(true)}
+        className={`w-full h-full object-cover transition-opacity duration-main ${
+          loaded ? 'opacity-100' : 'opacity-0'
+        }`}
       >
         <source src="/videos/based-on.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
       </video>
+
+      <div className="absolute inset-0 z-10 bg-video-gradient pointer-events-none " />
     </div>
   );
 };
