@@ -1,4 +1,5 @@
-import AnimationLine from '@/components/home/AnimationLine/AnimationLine';
+import AnimationLine from '@/components/common/AnimationLine/AnimationLine';
+import BasedOnSection from '@/components/sections/home/BasedOnSection';
 import HeroSection from '@/components/sections/home/HeroSection';
 
 const HomePage = () => {
@@ -6,6 +7,7 @@ const HomePage = () => {
     <>
       <HeroSection />
       <AnimationLine />
+      <BasedOnSection />
     </>
   );
 };

@@ -11,6 +11,7 @@ const ContactUsBtn = () => {
         <div className="max-w-310.5 flex justify-end items-end">
           <Link
             href="/contact"
+            scroll={false}
             className="pointer-events-auto w-14.5 h-14.5 rounded-full bg-accent 
           shadow-lg flex items-center justify-center cursor-pointer"
           >
