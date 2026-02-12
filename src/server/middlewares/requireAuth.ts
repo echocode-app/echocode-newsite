@@ -1,5 +1,7 @@
-import type { DecodedIdToken } from 'firebase-admin/auth';
-import { auth } from '@/server/firebase/admin';
+import {
+  verifyFirebaseIdToken,
+  type FirebaseDecodedIdToken,
+} from '@/server/firebase/auth';
 import { ApiError } from '@/server/lib/errors';
 import { isRole, type Role } from '@/server/auth/roles';
 
@@ -7,7 +9,7 @@ import { isRole, type Role } from '@/server/auth/roles';
 export type AuthContext = {
   uid: string;
   email: string | null;
-  token: DecodedIdToken;
+  token: FirebaseDecodedIdToken;
   role: Role | null;
 };
 
@@ -40,16 +42,15 @@ export async function requireAuth(
 ): Promise<AuthContext> {
   const token = parseBearerToken(authorizationHeader);
 
-  let decoded: DecodedIdToken;
+  let decoded: FirebaseDecodedIdToken;
   try {
-    decoded = await auth.verifyIdToken(token);
+    decoded = await verifyFirebaseIdToken(token, true);
   } catch (cause) {
-    throw new ApiError(
-      'UNAUTHORIZED',
-      401,
-      'Invalid or expired token',
-      { publicMessage: 'Unauthorized', cause },
-    );
+    if (cause instanceof ApiError) throw cause;
+    throw new ApiError('UNAUTHORIZED', 401, 'Invalid or expired token', {
+      publicMessage: 'Unauthorized',
+      cause,
+    });
   }
 
   const roleClaim = decoded.role;

@@ -1,4 +1,7 @@
-import { auth } from '@/server/firebase/admin';
+import {
+  getFirebaseUser,
+  setFirebaseCustomUserClaims,
+} from '@/server/firebase/auth';
 import { env } from '@/server/config/env';
 import { ApiError } from '@/server/lib/errors';
 import { isRole, type Role } from '@/server/auth/roles';
@@ -19,27 +22,18 @@ export async function bootstrapAdminIfAllowed(
 
   if (!env.adminBootstrapEmails.includes(email.toLowerCase())) return;
 
-  let user;
-  try {
-    user = await auth.getUser(uid);
-  } catch (cause) {
-    throw new ApiError(
-      'INTERNAL_ERROR',
-      500,
-      'Failed to load Firebase user during admin bootstrap',
-      { publicMessage: 'Unexpected server error', cause },
-    );
-  }
+  const user = await getFirebaseUser(uid);
 
   if (isRole(user.customClaims?.role)) return;
 
   try {
-    await auth.setCustomUserClaims(uid, {
+    await setFirebaseCustomUserClaims(uid, {
       ...(user.customClaims ?? {}),
       role: 'developer',
     });
-    await auth.getUser(uid);
+    await getFirebaseUser(uid);
   } catch (cause) {
+    if (cause instanceof ApiError) throw cause;
     throw new ApiError(
       'INTERNAL_ERROR',
       500,
@@ -53,17 +47,7 @@ export async function bootstrapAdminIfAllowed(
 export async function getAuthenticatedUserProfile(
   uid: string,
 ): Promise<AuthenticatedUserProfile> {
-  let user;
-  try {
-    user = await auth.getUser(uid);
-  } catch (cause) {
-    throw new ApiError(
-      'INTERNAL_ERROR',
-      500,
-      'Failed to load Firebase user profile',
-      { publicMessage: 'Unexpected server error', cause },
-    );
-  }
+  const user = await getFirebaseUser(uid);
 
   return {
     uid: user.uid,

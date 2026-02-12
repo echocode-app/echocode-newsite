@@ -3,15 +3,18 @@ import { z } from 'zod';
 type NodeEnv = 'development' | 'test' | 'production';
 
 type RequiredEnv = {
-  firebaseProjectId: string;
-  firebaseClientEmail: string;
-  firebasePrivateKey: string;
+  firebaseCredentialSource: 'env' | 'adc';
 };
 
 type OptionalEnv = {
   nodeEnv: NodeEnv;
   adminBootstrapEmails: string[];
   apiVersion: string;
+  firebaseCheckStorage: boolean;
+  firebaseProjectId?: string;
+  firebaseClientEmail?: string;
+  firebasePrivateKey?: string;
+  firebaseStorageBucket?: string;
 };
 
 export type Env = RequiredEnv & OptionalEnv;
@@ -25,12 +28,20 @@ class ConfigurationError extends Error {
 
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
-  FIREBASE_PROJECT_ID: z.string().trim().min(1),
-  FIREBASE_CLIENT_EMAIL: z.string().trim().email(),
-  FIREBASE_PRIVATE_KEY: z.string().trim().min(1),
+  FIREBASE_PROJECT_ID: z.string().trim().min(1).optional(),
+  FIREBASE_CLIENT_EMAIL: z.string().trim().email().optional(),
+  FIREBASE_PRIVATE_KEY: z.string().trim().min(1).optional(),
+  FIREBASE_STORAGE_BUCKET: z.string().trim().min(1).optional(),
+  FIREBASE_CHECK_STORAGE: z.string().trim().optional(),
   ADMIN_BOOTSTRAP_EMAILS: z.string().optional(),
   API_VERSION: z.string().trim().min(1).default('v1'),
 });
+
+function parseBooleanFlag(value: string | undefined, fallback: boolean): boolean {
+  if (!value) return fallback;
+  const normalized = value.trim().toLowerCase();
+  return normalized === '1' || normalized === 'true' || normalized === 'yes';
+}
 
 /** Normalizes bootstrap allowlist into a lowercase, deduplicated email array */
 function normalizeBootstrapEmails(value: string | undefined): string[] {
@@ -67,11 +78,26 @@ function parseEnvironment(raw: NodeJS.ProcessEnv): Env {
     );
   }
 
+  const hasProjectId = !!parsed.data.FIREBASE_PROJECT_ID;
+  const hasClientEmail = !!parsed.data.FIREBASE_CLIENT_EMAIL;
+  const hasPrivateKey = !!parsed.data.FIREBASE_PRIVATE_KEY;
+  const hasAnyFirebaseCredential = hasProjectId || hasClientEmail || hasPrivateKey;
+  const hasAllFirebaseCredential = hasProjectId && hasClientEmail && hasPrivateKey;
+
+  if (hasAnyFirebaseCredential && !hasAllFirebaseCredential) {
+    throw new ConfigurationError(
+      'Environment configuration error: FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL and FIREBASE_PRIVATE_KEY must be set together',
+    );
+  }
+
   return {
+    firebaseCredentialSource: hasAllFirebaseCredential ? 'env' : 'adc',
     nodeEnv: parsed.data.NODE_ENV,
     firebaseProjectId: parsed.data.FIREBASE_PROJECT_ID,
     firebaseClientEmail: parsed.data.FIREBASE_CLIENT_EMAIL,
-    firebasePrivateKey: parsed.data.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+    firebasePrivateKey: parsed.data.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+    firebaseStorageBucket: parsed.data.FIREBASE_STORAGE_BUCKET,
+    firebaseCheckStorage: parseBooleanFlag(parsed.data.FIREBASE_CHECK_STORAGE, false),
     adminBootstrapEmails: normalizeBootstrapEmails(parsed.data.ADMIN_BOOTSTRAP_EMAILS),
     apiVersion: parsed.data.API_VERSION,
   };
@@ -80,12 +106,15 @@ function parseEnvironment(raw: NodeJS.ProcessEnv): Env {
 /** Canonical environment accessor for the entire server layer */
 export const env = parseEnvironment(process.env);
 export const requiredEnv: RequiredEnv = {
-  firebaseProjectId: env.firebaseProjectId,
-  firebaseClientEmail: env.firebaseClientEmail,
-  firebasePrivateKey: env.firebasePrivateKey,
+  firebaseCredentialSource: env.firebaseCredentialSource,
 };
 export const optionalEnv: OptionalEnv = {
   nodeEnv: env.nodeEnv,
   adminBootstrapEmails: env.adminBootstrapEmails,
   apiVersion: env.apiVersion,
+  firebaseCheckStorage: env.firebaseCheckStorage,
+  firebaseProjectId: env.firebaseProjectId,
+  firebaseClientEmail: env.firebaseClientEmail,
+  firebasePrivateKey: env.firebasePrivateKey,
+  firebaseStorageBucket: env.firebaseStorageBucket,
 };

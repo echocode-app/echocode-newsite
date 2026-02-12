@@ -1,10 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { requireAuth } from '@/server/middlewares/requireAuth';
-import {
-  bootstrapAdminIfAllowed,
-  getAuthenticatedUserProfile,
-} from '@/server/auth/auth.service';
-import { handleApiRoute } from '@/server/lib/http';
+import { bootstrapAdminIfAllowed, getAuthenticatedUserProfile } from '@/server/auth';
+import { handleApiRoute } from '@/server/lib';
+import { requireAuth } from '@/server/middlewares';
 
 export const runtime = 'nodejs';
 

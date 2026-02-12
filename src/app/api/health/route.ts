@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { env } from '@/server/config/env';
-import { handleApiRoute } from '@/server/lib/http';
+import { handleApiRoute } from '@/server/lib';
 
 export const runtime = 'nodejs';
 
