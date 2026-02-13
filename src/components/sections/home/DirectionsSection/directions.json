@@ -1,6 +1,7 @@
 [
   {
     "id": 1,
+    "link": "/service-direction/mobile-development",
     "position": "50% 50%",
     "image": "/images/directions/mobile.png",
     "title": "Mobile Development",
@@ -8,6 +9,7 @@
   },
   {
     "id": 2,
+    "link": "/service-direction/web-development",
     "position": "50% 50%",
     "image": "/images/directions/web.png",
     "title": "Web Development",
@@ -15,6 +17,7 @@
   },
   {
     "id": 3,
+    "link": "/service-direction/game-development",
     "position": "50% 78%",
     "image": "/images/directions/game.png",
     "title": "Game Development",
@@ -22,6 +25,7 @@
   },
   {
     "id": 4,
+    "link": "/service-direction/igaming",
     "position": "50% 50%",
     "image": "/images/directions/igaming.png",
     "title": "IGAMING",
@@ -29,6 +33,7 @@
   },
   {
     "id": 5,
+    "link": "/service-direction/qa",
     "position": "50% 32%",
     "image": "/images/directions/qa.png",
     "title": "QA",
