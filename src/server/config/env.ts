@@ -11,6 +11,7 @@ type OptionalEnv = {
   adminBootstrapEmails: string[];
   apiVersion: string;
   firebaseCheckStorage: boolean;
+  internalFirebaseCheckEnabled: boolean;
   firebaseProjectId?: string;
   firebaseClientEmail?: string;
   firebasePrivateKey?: string;
@@ -33,6 +34,7 @@ const envSchema = z.object({
   FIREBASE_PRIVATE_KEY: z.string().trim().min(1).optional(),
   FIREBASE_STORAGE_BUCKET: z.string().trim().min(1).optional(),
   FIREBASE_CHECK_STORAGE: z.string().trim().optional(),
+  INTERNAL_FIREBASE_CHECK_ENABLED: z.string().trim().optional(),
   ADMIN_BOOTSTRAP_EMAILS: z.string().optional(),
   API_VERSION: z.string().trim().min(1).default('v1'),
 });
@@ -98,6 +100,10 @@ function parseEnvironment(raw: NodeJS.ProcessEnv): Env {
     firebasePrivateKey: parsed.data.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
     firebaseStorageBucket: parsed.data.FIREBASE_STORAGE_BUCKET,
     firebaseCheckStorage: parseBooleanFlag(parsed.data.FIREBASE_CHECK_STORAGE, false),
+    internalFirebaseCheckEnabled: parseBooleanFlag(
+      parsed.data.INTERNAL_FIREBASE_CHECK_ENABLED,
+      false,
+    ),
     adminBootstrapEmails: normalizeBootstrapEmails(parsed.data.ADMIN_BOOTSTRAP_EMAILS),
     apiVersion: parsed.data.API_VERSION,
   };
@@ -113,6 +119,7 @@ export const optionalEnv: OptionalEnv = {
   adminBootstrapEmails: env.adminBootstrapEmails,
   apiVersion: env.apiVersion,
   firebaseCheckStorage: env.firebaseCheckStorage,
+  internalFirebaseCheckEnabled: env.internalFirebaseCheckEnabled,
   firebaseProjectId: env.firebaseProjectId,
   firebaseClientEmail: env.firebaseClientEmail,
   firebasePrivateKey: env.firebasePrivateKey,

@@ -14,23 +14,18 @@ export type AuthContext = {
 };
 
 function parseBearerToken(authorizationHeader: string | null): string {
-  if (!authorizationHeader?.startsWith('Bearer ')) {
-    throw new ApiError(
-      'UNAUTHORIZED',
-      401,
-      'Missing or invalid Authorization header',
-      { publicMessage: 'Unauthorized' },
-    );
+  if (!authorizationHeader) {
+    throw ApiError.fromCode('UNAUTHORIZED', 'Missing or invalid Authorization header');
   }
 
-  const token = authorizationHeader.slice('Bearer '.length).trim();
+  const bearerPrefixMatch = authorizationHeader.match(/^Bearer\s+/i);
+  if (!bearerPrefixMatch) {
+    throw ApiError.fromCode('UNAUTHORIZED', 'Missing or invalid Authorization header');
+  }
+
+  const token = authorizationHeader.slice(bearerPrefixMatch[0].length).trim();
   if (!token) {
-    throw new ApiError(
-      'UNAUTHORIZED',
-      401,
-      'Missing bearer token',
-      { publicMessage: 'Unauthorized' },
-    );
+    throw ApiError.fromCode('UNAUTHORIZED', 'Missing bearer token');
   }
 
   return token;
@@ -47,7 +42,7 @@ export async function requireAuth(
     decoded = await verifyFirebaseIdToken(token, true);
   } catch (cause) {
     if (cause instanceof ApiError) throw cause;
-    throw new ApiError('UNAUTHORIZED', 401, 'Invalid or expired token', {
+    throw ApiError.fromCode('UNAUTHORIZED', 'Invalid or expired token', {
       publicMessage: 'Unauthorized',
       cause,
     });

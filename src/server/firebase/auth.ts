@@ -22,11 +22,22 @@ export async function verifyFirebaseIdToken(
   try {
     return await getFirebaseAuth().verifyIdToken(token, checkRevoked);
   } catch (cause) {
-    throw new ApiError(
-      'UNAUTHORIZED',
-      401,
-      'Invalid, expired, or revoked token',
-      { publicMessage: 'Unauthorized', cause },
+    const errorCode =
+      cause && typeof cause === 'object' && 'code' in cause
+        ? String((cause as { code: unknown }).code)
+        : '';
+    const isAuthFailure =
+      errorCode.startsWith('auth/invalid-') ||
+      errorCode === 'auth/id-token-expired' ||
+      errorCode === 'auth/id-token-revoked' ||
+      errorCode === 'auth/argument-error';
+
+    throw ApiError.fromCode(
+      isAuthFailure ? 'AUTH_INVALID_TOKEN' : 'FIREBASE_UNAVAILABLE',
+      isAuthFailure
+        ? 'Invalid, expired, or revoked token'
+        : 'Firebase Auth verification service is unavailable',
+      { publicMessage: isAuthFailure ? 'Unauthorized' : 'Service unavailable', cause },
     );
   }
 }
@@ -35,11 +46,10 @@ export async function getFirebaseUser(uid: string): Promise<UserRecord> {
   try {
     return await getFirebaseAuth().getUser(uid);
   } catch (cause) {
-    throw new ApiError(
+    throw ApiError.fromCode(
       'INTERNAL_ERROR',
-      500,
       'Failed to load Firebase user',
-      { publicMessage: 'Unexpected server error', cause },
+      { cause },
     );
   }
 }
@@ -51,11 +61,10 @@ export async function setFirebaseCustomUserClaims(
   try {
     await getFirebaseAuth().setCustomUserClaims(uid, claims);
   } catch (cause) {
-    throw new ApiError(
+    throw ApiError.fromCode(
       'INTERNAL_ERROR',
-      500,
       'Failed to update Firebase custom claims',
-      { publicMessage: 'Unexpected server error', cause },
+      { cause },
     );
   }
 }
@@ -65,11 +74,10 @@ export function isFirebaseAuthAvailable(): boolean {
     getFirebaseAuth();
     return true;
   } catch (cause) {
-    throw new ApiError(
-      'SERVICE_UNAVAILABLE',
-      503,
+    throw ApiError.fromCode(
+      'FIREBASE_UNAVAILABLE',
       'Firebase Auth service is unavailable',
-      { publicMessage: 'Service unavailable', cause },
+      { cause },
     );
   }
 }

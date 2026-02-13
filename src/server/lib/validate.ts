@@ -13,12 +13,10 @@ export function validate<TSchema extends z.ZodTypeAny>(
   const path = firstIssue?.path.join('.') || 'payload';
   const reason = firstIssue?.message || 'Invalid request payload';
 
-  throw new ApiError(
-    'BAD_REQUEST',
-    400,
+  throw ApiError.fromCode(
+    'VALIDATION_FAILED',
     `Validation failed at "${path}": ${reason}`,
     {
-      publicMessage: 'Invalid request payload',
       cause: parsed.error,
     },
   );

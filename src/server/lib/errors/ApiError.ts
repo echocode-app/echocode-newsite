@@ -1,8 +1,12 @@
-import type { ApiErrorCode } from '@/server/lib/errors/errorCodes';
+import {
+  getApiErrorCatalogEntry,
+  type ApiErrorCode,
+} from '@/server/lib/errors/errorCodes';
 
 type ApiErrorOptions = {
   publicMessage?: string;
   cause?: unknown;
+  status?: number;
 };
 
 // This class separates internal diagnostics from user-facing messages.
@@ -24,6 +28,22 @@ export class ApiError extends Error {
     this.status = status;
     this.publicMessage = options.publicMessage ?? internalMessage;
     this.cause = options.cause;
+  }
+
+  /**
+   * Creates a normalized ApiError from catalog defaults.
+   * Use this for new code paths to avoid duplicating status/message constants.
+   */
+  static fromCode(
+    code: ApiErrorCode,
+    internalMessage: string,
+    options: ApiErrorOptions = {},
+  ): ApiError {
+    const catalog = getApiErrorCatalogEntry(code);
+    return new ApiError(code, options.status ?? catalog.status, internalMessage, {
+      publicMessage: options.publicMessage ?? catalog.publicMessage,
+      cause: options.cause,
+    });
   }
 }
 

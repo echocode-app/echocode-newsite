@@ -13,24 +13,21 @@ export function requirePermission(
 ): void {
   const role = authContext.role;
   if (!role || !isRole(role)) {
-    throw new ApiError(
-      'FORBIDDEN',
-      403,
-      'Role is missing or invalid',
-      { publicMessage: 'Forbidden' },
-    );
+    throw ApiError.fromCode('FORBIDDEN', 'Role is missing or invalid');
   }
 
   const requested = Array.isArray(permissions) ? permissions : [permissions];
+  if (requested.length === 0) {
+    throw ApiError.fromCode('BAD_REQUEST', 'Permissions list must not be empty');
+  }
+
   const evaluator = mode === 'any' ? 'some' : 'every';
   const granted = requested[evaluator]((permission) => hasPermission(role, permission));
 
   if (!granted) {
-    throw new ApiError(
+    throw ApiError.fromCode(
       'FORBIDDEN',
-      403,
       `Missing required permissions (${mode}): ${requested.join(', ')}`,
-      { publicMessage: 'Forbidden' },
     );
   }
 }

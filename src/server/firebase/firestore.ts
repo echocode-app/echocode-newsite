@@ -27,19 +27,16 @@ export async function runFirestoreSmokeCheck(): Promise<{ documentPath: string }
 
     const snapshot = await docRef.get();
     if (!snapshot.exists) {
-      throw new ApiError(
-        'SERVICE_UNAVAILABLE',
-        503,
+      throw ApiError.fromCode(
+        'FIREBASE_UNAVAILABLE',
         'Firestore smoke check failed to read written document',
-        { publicMessage: 'Service unavailable' },
       );
     }
   } catch (cause) {
-    throw new ApiError(
-      'SERVICE_UNAVAILABLE',
-      503,
+    throw ApiError.fromCode(
+      'FIREBASE_UNAVAILABLE',
       'Firestore service is unavailable',
-      { publicMessage: 'Service unavailable', cause },
+      { cause },
     );
   } finally {
     // Best-effort cleanup keeps the health check collection from growing over time.

@@ -47,11 +47,10 @@ function createFirebaseAdminApp(): App {
   try {
     return initializeApp(buildAppOptions());
   } catch (cause) {
-    throw new ApiError(
-      'SERVICE_UNAVAILABLE',
-      503,
+    throw ApiError.fromCode(
+      'FIREBASE_UNAVAILABLE',
       'Failed to initialize Firebase Admin app',
-      { publicMessage: 'Service unavailable', cause },
+      { cause },
     );
   }
 }

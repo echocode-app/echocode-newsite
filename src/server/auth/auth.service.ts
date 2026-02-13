@@ -34,11 +34,10 @@ export async function bootstrapAdminIfAllowed(
     await getFirebaseUser(uid);
   } catch (cause) {
     if (cause instanceof ApiError) throw cause;
-    throw new ApiError(
+    throw ApiError.fromCode(
       'INTERNAL_ERROR',
-      500,
       'Failed to set Firebase custom claims',
-      { publicMessage: 'Unexpected server error', cause },
+      { cause },
     );
   }
 }

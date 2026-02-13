@@ -17,11 +17,9 @@ export function getFirebaseStorageBucket(): Bucket {
       : storage.bucket();
 
     if (!bucket.name) {
-      throw new ApiError(
-        'SERVICE_UNAVAILABLE',
-        503,
+      throw ApiError.fromCode(
+        'FIREBASE_UNAVAILABLE',
         'Firebase Storage bucket is not configured',
-        { publicMessage: 'Service unavailable' },
       );
     }
 
@@ -29,11 +27,10 @@ export function getFirebaseStorageBucket(): Bucket {
   } catch (cause) {
     if (cause instanceof ApiError) throw cause;
 
-    throw new ApiError(
-      'SERVICE_UNAVAILABLE',
-      503,
+    throw ApiError.fromCode(
+      'FIREBASE_UNAVAILABLE',
       'Failed to initialize Firebase Storage bucket',
-      { publicMessage: 'Service unavailable', cause },
+      { cause },
     );
   }
 }
@@ -45,11 +42,10 @@ export async function checkFirebaseStorageAvailability(): Promise<{ bucket: stri
   try {
     await bucket.getMetadata();
   } catch (cause) {
-    throw new ApiError(
-      'SERVICE_UNAVAILABLE',
-      503,
+    throw ApiError.fromCode(
+      'FIREBASE_UNAVAILABLE',
       'Firebase Storage service is unavailable',
-      { publicMessage: 'Service unavailable', cause },
+      { cause },
     );
   }
 

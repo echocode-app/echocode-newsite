@@ -10,23 +10,19 @@ export function toApiError(value: unknown): ApiError {
     const path = firstIssue?.path.join('.') || 'payload';
     const reason = firstIssue?.message || 'Invalid request payload';
 
-    return new ApiError(
-      'BAD_REQUEST',
-      400,
+    return ApiError.fromCode(
+      'VALIDATION_FAILED',
       `Validation failed at "${path}": ${reason}`,
       {
-        publicMessage: 'Invalid request payload',
         cause: value,
       },
     );
   }
 
-  return new ApiError(
+  return ApiError.fromCode(
     'INTERNAL_ERROR',
-    500,
     'Unexpected server error',
     {
-      publicMessage: 'Unexpected server error',
       cause: value,
     },
   );
