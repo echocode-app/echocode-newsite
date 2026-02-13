@@ -122,4 +122,8 @@
   .bg-video-gradient {
     background: var(--background-image-video-gradient);
   }
+
+  .border-gradient {
+    background-image: var(--background-image-main-gradient);
+  }
 }

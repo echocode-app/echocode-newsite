@@ -6,9 +6,7 @@ interface SectionTitleProps {
 
 const SectionTitle = ({ children }: SectionTitleProps) => {
   return (
-    <h2 className=" mb-2.5 block text-title-2xl md:text-title-4xl font-title text-white">
-      {children}
-    </h2>
+    <h2 className="block text-title-2xl md:text-title-4xl font-title text-white">{children}</h2>
   );
 };
 
