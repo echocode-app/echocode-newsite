@@ -18,13 +18,17 @@ const DirectionItem = ({ position, image, title, description, link }: DirectionI
     lg:before:absolute lg:before:top-0 lg:before:right-0
     lg:before:bg-gray75 lg:before:h-px lg:before:w-6"
     >
-      <div className="relative min-w-43 min-h-45 md:min-w-100 md:min-h-45 max-w-full overflow-hidden rounded-secondary">
+      <div
+        className="relative min-w-43 min-h-45 md:min-w-100 md:min-h-45 max-w-full
+       overflow-hidden rounded-secondary"
+      >
         <Image
           src={image}
           alt={title}
           fill
           style={{ objectPosition: position }}
-          className="object-cover transition-transform duration-main group-hover:scale-105"
+          className="object-cover transition-transform duration-main group-hover:scale-105
+          will-change-transform"
         />
       </div>
       <div>
