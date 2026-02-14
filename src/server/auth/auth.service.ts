@@ -1,4 +1,6 @@
 import {
+  getFirebaseAuth,
+  type FirebaseDecodedIdToken,
   getFirebaseUser,
   setFirebaseCustomUserClaims,
 } from '@/server/firebase/auth';
@@ -12,6 +14,81 @@ export type AuthenticatedUserProfile = {
   email: string | null;
   role: Role | null;
 };
+
+export type VerifiedAuthPayload = {
+  uid: string;
+  email?: string;
+  emailVerified?: boolean;
+  claims: FirebaseDecodedIdToken;
+};
+
+function getFirebaseAuthErrorCode(error: unknown): string {
+  if (!error || typeof error !== 'object' || !('code' in error)) return '';
+  return String((error as { code: unknown }).code);
+}
+
+/**
+ * Extracts Firebase ID token from Authorization header.
+ * Header format: "Authorization: Bearer <ID_TOKEN>".
+ */
+export function extractIdToken(request: Pick<Request, 'headers'>): string {
+  const authorizationHeader = request.headers.get('authorization');
+  if (!authorizationHeader) {
+    throw ApiError.fromCode(
+      'AUTH_MISSING_TOKEN',
+      'Authorization header is required for protected endpoint',
+    );
+  }
+
+  const bearerPrefixMatch = authorizationHeader.match(/^Bearer\s+/i);
+  if (!bearerPrefixMatch) {
+    throw ApiError.fromCode(
+      'AUTH_INVALID_TOKEN',
+      'Authorization header must use Bearer token format',
+    );
+  }
+
+  const token = authorizationHeader.slice(bearerPrefixMatch[0].length).trim();
+  if (!token) {
+    throw ApiError.fromCode('AUTH_MISSING_TOKEN', 'Bearer token is missing');
+  }
+
+  return token;
+}
+
+/**
+ * Verifies Firebase ID token and returns normalized auth payload.
+ * Revocation checks are environment-aware: disabled in development, enabled otherwise.
+ */
+export async function verifyIdToken(token: string): Promise<VerifiedAuthPayload> {
+  if (!token.trim()) {
+    throw ApiError.fromCode('AUTH_MISSING_TOKEN', 'Token is missing');
+  }
+
+  try {
+    // Use strict revocation checks outside local development for safer environments.
+    const checkRevoked = env.nodeEnv !== 'development';
+    const decoded = await getFirebaseAuth().verifyIdToken(token, checkRevoked);
+
+    return {
+      uid: decoded.uid,
+      email: decoded.email,
+      emailVerified: decoded.email_verified,
+      claims: decoded,
+    };
+  } catch (cause) {
+    const firebaseCode = getFirebaseAuthErrorCode(cause);
+    if (firebaseCode === 'auth/id-token-revoked') {
+      throw ApiError.fromCode('AUTH_REVOKED_TOKEN', 'Firebase ID token is revoked', {
+        cause,
+      });
+    }
+
+    throw ApiError.fromCode('AUTH_INVALID_TOKEN', 'Firebase ID token is invalid or expired', {
+      cause,
+    });
+  }
+}
 
 /** Bootstraps developer role only for allowlisted emails that currently have no role */
 export async function bootstrapAdminIfAllowed(

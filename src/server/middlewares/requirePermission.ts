@@ -13,7 +13,7 @@ export function requirePermission(
 ): void {
   const role = authContext.role;
   if (!role || !isRole(role)) {
-    throw ApiError.fromCode('FORBIDDEN', 'Role is missing or invalid');
+    throw ApiError.fromCode('PERMISSION_DENIED', 'Role is missing or invalid');
   }
 
   const requested = Array.isArray(permissions) ? permissions : [permissions];
@@ -26,7 +26,7 @@ export function requirePermission(
 
   if (!granted) {
     throw ApiError.fromCode(
-      'FORBIDDEN',
+      'PERMISSION_DENIED',
       `Missing required permissions (${mode}): ${requested.join(', ')}`,
     );
   }

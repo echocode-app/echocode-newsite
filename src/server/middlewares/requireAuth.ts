@@ -1,7 +1,4 @@
-import {
-  verifyFirebaseIdToken,
-  type FirebaseDecodedIdToken,
-} from '@/server/firebase/auth';
+import { extractIdToken, verifyIdToken } from '@/server/auth/auth.service';
 import { ApiError } from '@/server/lib/errors';
 import { isRole, type Role } from '@/server/auth/roles';
 
@@ -9,52 +6,28 @@ import { isRole, type Role } from '@/server/auth/roles';
 export type AuthContext = {
   uid: string;
   email: string | null;
-  token: FirebaseDecodedIdToken;
+  claims: Awaited<ReturnType<typeof verifyIdToken>>['claims'];
   role: Role | null;
 };
 
-function parseBearerToken(authorizationHeader: string | null): string {
-  if (!authorizationHeader) {
-    throw ApiError.fromCode('UNAUTHORIZED', 'Missing or invalid Authorization header');
-  }
-
-  const bearerPrefixMatch = authorizationHeader.match(/^Bearer\s+/i);
-  if (!bearerPrefixMatch) {
-    throw ApiError.fromCode('UNAUTHORIZED', 'Missing or invalid Authorization header');
-  }
-
-  const token = authorizationHeader.slice(bearerPrefixMatch[0].length).trim();
-  if (!token) {
-    throw ApiError.fromCode('UNAUTHORIZED', 'Missing bearer token');
-  }
-
-  return token;
-}
-
 /** Verifies bearer token and returns normalized auth context for handlers/services */
 export async function requireAuth(
-  authorizationHeader: string | null,
+  request: Pick<Request, 'headers'>,
 ): Promise<AuthContext> {
-  const token = parseBearerToken(authorizationHeader);
-
-  let decoded: FirebaseDecodedIdToken;
   try {
-    decoded = await verifyFirebaseIdToken(token, true);
+    const token = extractIdToken(request);
+    const verified = await verifyIdToken(token);
+    const roleClaim = verified.claims.role;
+    const role = isRole(roleClaim) ? roleClaim : null;
+
+    return {
+      uid: verified.uid,
+      email: verified.email ?? null,
+      claims: verified.claims,
+      role,
+    };
   } catch (cause) {
     if (cause instanceof ApiError) throw cause;
-    throw ApiError.fromCode('UNAUTHORIZED', 'Invalid or expired token', {
-      publicMessage: 'Unauthorized',
-      cause,
-    });
+    throw ApiError.fromCode('AUTH_INVALID_TOKEN', 'Invalid or expired token', { cause });
   }
-
-  const roleClaim = decoded.role;
-  const role = isRole(roleClaim) ? roleClaim : null;
-
-  return {
-    uid: decoded.uid,
-    email: decoded.email ?? null,
-    token: decoded,
-    role,
-  };
 }

@@ -1,10 +1,10 @@
 import { bootstrapAdminIfAllowed, getAuthenticatedUserProfile } from '@/server/auth';
-import { ApiError, withApi } from '@/server/lib';
+import { ApiError, withAdminApi } from '@/server/lib';
 
 export const runtime = 'nodejs';
 
 /** Thin controller: auth bootstrap + trusted user profile response */
-export const GET = withApi(
+export const GET = withAdminApi(
   async ({ auth }) => {
     if (!auth) {
       throw ApiError.fromCode('UNAUTHORIZED', 'Auth context is required for /api/admin/me');
@@ -14,7 +14,6 @@ export const GET = withApi(
     await bootstrapAdminIfAllowed(authContext.uid, authContext.email ?? undefined);
     return getAuthenticatedUserProfile(authContext.uid);
   },
-  { auth: true },
 );
 
 // curl http://localhost:3000/api/admin/me

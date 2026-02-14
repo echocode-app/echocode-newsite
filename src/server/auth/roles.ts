@@ -1,16 +1,25 @@
+import { env } from '@/server/config/env';
+
 export type Role = 'admin' | 'developer' | 'manager';
 
 export type Permission =
   | '*'
+  | 'admin.access'
   | 'submissions.read'
   | 'submissions.updateStatus'
   | 'vacancies.write'
   | 'portfolio.write'
   | 'audit.read';
 
+export const ADMIN_ACCESS_PERMISSION = 'admin.access';
+
+const developerPermissions: readonly Permission[] =
+  env.nodeEnv === 'development' ? ['*'] : [];
+
 export const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
   admin: ['*'],
-  developer: ['*'],
+  // Keep development friction low, but lock developer access in non-dev environments.
+  developer: developerPermissions,
   manager: [
     'submissions.read',
     'submissions.updateStatus',

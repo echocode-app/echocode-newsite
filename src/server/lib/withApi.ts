@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { ADMIN_ACCESS_PERMISSION } from '@/server/auth/roles';
 import { requireAuth, requirePermission, type AuthContext } from '@/server/middlewares';
 import { ApiError } from '@/server/lib/errors';
 import { handleApiRoute } from '@/server/lib/http';
@@ -30,6 +31,11 @@ type WithPaginatedApiOptions<
   TQuerySchema extends AnyZodSchema | undefined,
   TBodySchema extends AnyZodSchema | undefined,
 > = Omit<WithApiOptions<TQuerySchema, TBodySchema>, 'pagination'>;
+
+type WithAdminApiOptions<
+  TQuerySchema extends AnyZodSchema | undefined,
+  TBodySchema extends AnyZodSchema | undefined,
+> = Omit<WithApiOptions<TQuerySchema, TBodySchema>, 'auth' | 'permissions'>;
 
 export type ApiHandlerContext<TQuery = undefined, TBody = undefined> = {
   req: NextRequest;
@@ -98,14 +104,10 @@ export function withApi<
 
         let authContext: AuthContext | null = null;
         if (options.auth || options.permissions) {
-          authContext = await requireAuth(req.headers.get('authorization'));
+          authContext = await requireAuth(req);
         }
         if (authContext && options.permissions) {
-          requirePermission(
-            authContext,
-            options.permissions,
-            options.permissionMode ?? 'all',
-          );
+          requirePermission(authContext, options.permissions, options.permissionMode ?? 'all');
         }
 
         return handler({
@@ -132,10 +134,7 @@ export function withPaginatedApi<
   TBodySchema extends AnyZodSchema | undefined = undefined,
 >(
   handler: (
-    context: PaginatedApiHandlerContext<
-      InferSchema<TQuerySchema>,
-      InferSchema<TBodySchema>
-    >,
+    context: PaginatedApiHandlerContext<InferSchema<TQuerySchema>, InferSchema<TBodySchema>>,
   ) => Promise<TData> | TData,
   options: WithPaginatedApiOptions<TQuerySchema, TBodySchema> = {},
 ): (req: NextRequest) => Promise<NextResponse> {
@@ -158,4 +157,25 @@ export function withPaginatedApi<
       pagination: true,
     },
   );
+}
+
+/**
+ * Admin-only wrapper that enforces auth + admin access permission for route handlers.
+ * Use this for every `/api/admin/*` endpoint to keep access policy consistent.
+ */
+export function withAdminApi<
+  TData,
+  TQuerySchema extends AnyZodSchema | undefined = undefined,
+  TBodySchema extends AnyZodSchema | undefined = undefined,
+>(
+  handler: (
+    context: ApiHandlerContext<InferSchema<TQuerySchema>, InferSchema<TBodySchema>>,
+  ) => Promise<TData> | TData,
+  options: WithAdminApiOptions<TQuerySchema, TBodySchema> = {},
+): (req: NextRequest) => Promise<NextResponse> {
+  return withApi(handler, {
+    ...options,
+    auth: true,
+    permissions: ADMIN_ACCESS_PERMISSION,
+  });
 }
