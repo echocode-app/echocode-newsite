@@ -1,8 +1,8 @@
-import projects from './projects.json';
+import projects from '@/data/projects.json';
 
-import SectionContainer from '@/components/UI/SectionContainer';
-import SectionGradientLine from '@/components/UI/SectionGradientLine';
-import SectionTitle from '@/components/UI/SectionTitle';
+import SectionContainer from '@/components/UI/section/SectionContainer';
+import SectionGradientLine from '@/components/UI/section/SectionGradientLine';
+import SectionTitle from '@/components/UI/section/SectionTitle';
 import PortfolioList from './PortfolioList';
 
 const PortfolioSection = () => {

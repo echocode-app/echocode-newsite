@@ -26,6 +26,7 @@ const DirectionItem = ({ position, image, title, description, link }: DirectionI
           src={image}
           alt={title}
           fill
+          sizes="420px"
           style={{ objectPosition: position }}
           className="object-cover transition-transform duration-main group-hover:scale-105
           will-change-transform"

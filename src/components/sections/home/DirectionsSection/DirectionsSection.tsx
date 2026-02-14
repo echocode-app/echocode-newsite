@@ -1,6 +1,6 @@
-import SectionContainer from '@/components/UI/SectionContainer';
-import SectionGradientLine from '@/components/UI/SectionGradientLine';
-import SectionTitle from '@/components/UI/SectionTitle';
+import SectionContainer from '@/components/UI/section/SectionContainer';
+import SectionGradientLine from '@/components/UI/section/SectionGradientLine';
+import SectionTitle from '@/components/UI/section/SectionTitle';
 import DirectionList from './DirectionList';
 
 const DirectionSection = () => {

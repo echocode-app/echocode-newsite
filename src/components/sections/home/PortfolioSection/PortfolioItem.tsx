@@ -16,6 +16,7 @@ const PortfolioItem = ({ link, image, title }: PortfolioItemProps) => {
             src={image}
             alt={title}
             fill
+            sizes="306px"
             className="object-cover rounded-secondary group-hover:scale-105 duration-main
             will-change-transform"
           />
@@ -28,7 +29,11 @@ const PortfolioItem = ({ link, image, title }: PortfolioItemProps) => {
          group-hover:text-accent duration-main"
         >
           Development
-          <span className="block bg-gray75 w-1 h-1 rounded-full" /> UI/UX
+          <span
+            className="block bg-gray75 w-1 h-1 rounded-full
+           group-hover:bg-accent duration-main"
+          />
+          UI/UX
         </p>
       </Link>
     </li>

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
 
-import directions from './directions.json';
+import directions from '@/data/directions.json';
 import DirectionItem from './DirectionItem';
 const DirectionList = () => {
   const [isShowLastItems, setIsShowLastItems] = useState(false);
