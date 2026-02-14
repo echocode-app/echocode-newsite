@@ -1,5 +1,5 @@
 import OrderButton from '@/components/UI/OrderLink';
-import SectionContainer from '@/components/UI/SectionContainer';
+import SectionContainer from '@/components/UI/section/SectionContainer';
 
 const HeroSection = () => {
   return (

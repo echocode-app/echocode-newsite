@@ -5,7 +5,7 @@ import MobileMenu from './MobileMenu';
 
 import LanguageSwitcher from '@/components/I18n/LanguageSwitcher';
 import Logo from '@/components/UI/Logo';
-import SectionContainer from '@/components/UI/SectionContainer';
+import SectionContainer from '@/components/UI/section/SectionContainer';
 
 const Header = () => {
   return (

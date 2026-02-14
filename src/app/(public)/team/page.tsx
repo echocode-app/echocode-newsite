@@ -1,4 +1,4 @@
-import SectionContainer from '@/components/UI/SectionContainer';
+import SectionContainer from '@/components/UI/section/SectionContainer';
 
 const Team = () => {
   return (

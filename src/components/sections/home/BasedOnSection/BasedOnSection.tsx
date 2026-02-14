@@ -1,7 +1,7 @@
 import BasedOnVideo from './BasedOnVideo';
 import MetricsList from './MetricsList';
 
-import SectionContainer from '@/components/UI/SectionContainer';
+import SectionContainer from '@/components/UI/section/SectionContainer';
 
 const BasedOnSection = () => {
   return (

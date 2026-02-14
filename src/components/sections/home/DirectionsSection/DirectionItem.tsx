@@ -1,34 +1,47 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface DirectionItemProps {
+  link: string;
   position: string;
   image: string;
   title: string;
   description: string;
 }
 
-const DirectionItem = ({ position, image, title, description }: DirectionItemProps) => {
+const DirectionItem = ({ position, image, title, description, link }: DirectionItemProps) => {
   return (
-    <div
-      className="relative flex flex-col sm:flex-row gap-4 
-    md:before:content-[''] 
-    md:before:absolute md:before:top-0 md:before:right-0
-    md:before:bg-gray75 md:before:h-px md:before:w-6"
+    <Link
+      href={link}
+      className="relative flex flex-col sm:flex-row gap-4 cursor-pointer group 
+    lg:before:content-[''] 
+    lg:before:absolute lg:before:top-0 lg:before:right-0
+    lg:before:bg-gray75 lg:before:h-px lg:before:w-6"
     >
-      <div className="relative min-w-43 min-h-45 md:min-w-100 md:min-h-45 max-w-full">
+      <div
+        className="relative min-w-43 min-h-45 md:min-w-100 md:min-h-45 max-w-full
+       overflow-hidden rounded-secondary"
+      >
         <Image
           src={image}
-          fill
           alt={title}
+          fill
+          sizes="420px"
           style={{ objectPosition: position }}
-          className="object-cover rounded-secondary"
+          className="object-cover transition-transform duration-main group-hover:scale-105
+          will-change-transform"
         />
       </div>
       <div>
-        <h3 className="mb-2.5 font-title font-bold text-title-base md:text-title-2xl">{title}</h3>
+        <h3
+          className="mb-2.5 font-title font-bold text-title-base md:text-title-2xl
+         group-hover:text-accent duration-main"
+        >
+          {title}
+        </h3>
         <p className="text-main-sm text-gray75">{description}</p>
       </div>
-    </div>
+    </Link>
   );
 };
 

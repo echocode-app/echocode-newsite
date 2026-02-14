@@ -1,0 +1,9 @@
+[
+  { "image": "/images/services/google.png", "desc": "Google" },
+  { "image": "/images/services/firebase.png", "desc": "Firebase" },
+  { "image": "/images/services/render.png", "desc": "Render" },
+  { "image": "/images/services/adapty.png", "desc": "Adapty" },
+  { "image": "/images/services/adjust.png", "desc": "Adjust" },
+  { "image": "/images/services/apphud.png", "desc": "AppHud" },
+  { "image": "/images/services/apple.png", "desc": "apple" }
+]

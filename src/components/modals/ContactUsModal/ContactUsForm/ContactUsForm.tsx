@@ -14,7 +14,7 @@ const ContactUsForm = () => {
         <ContactInput name="Email*" label="Email*" />
         <ContactFile />
       </div>
-      <div className="mb-8">
+      <div className="mb-4 md:mb-8">
         <YourNeedsInput />
       </div>
       <SubmitButton />
