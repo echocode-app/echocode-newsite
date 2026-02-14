@@ -1,13 +1,13 @@
-import SectionContainer from '@/components/UI/section/SectionContainer';
+import HeroSection from '@/components/sections/directions/mobile/HeroSection';
+import StaticGradientLine from '@/components/UI/StaticGradientLine';
 
-const ServiceDirection = () => {
+const Mobile = () => {
   return (
-    <section className="py-60">
-      <SectionContainer>
-        <h1 className="font-title text-title-4xl text-center">Mobile Development</h1>
-      </SectionContainer>
-    </section>
+    <>
+      <HeroSection />
+      <StaticGradientLine />
+    </>
   );
 };
 
-export default ServiceDirection;
+export default Mobile;

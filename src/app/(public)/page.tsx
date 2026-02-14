@@ -1,4 +1,4 @@
-import AnimationLine from '@/components/common/AnimationLine';
+import AnimationLine from '@/components/UI/AnimationLine';
 import BasedOnSection from '@/components/sections/home/BasedOnSection';
 import DirectionSection from '@/components/sections/home/DirectionsSection';
 import HeroSection from '@/components/sections/home/HeroSection';

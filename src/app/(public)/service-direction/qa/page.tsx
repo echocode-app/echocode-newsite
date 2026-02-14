@@ -1,12 +1,12 @@
-import SectionContainer from '@/components/UI/section/SectionContainer';
+import HeroSection from '@/components/sections/directions/qa/HeroSection';
+import StaticGradientLine from '@/components/UI/StaticGradientLine';
 
 const QAPage = () => {
   return (
-    <section className="py-60">
-      <SectionContainer>
-        <h1 className="font-title text-title-4xl text-center">QA</h1>
-      </SectionContainer>
-    </section>
+    <>
+      <HeroSection />
+      <StaticGradientLine />
+    </>
   );
 };
 

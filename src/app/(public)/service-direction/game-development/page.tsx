@@ -1,12 +1,12 @@
-import SectionContainer from '@/components/UI/section/SectionContainer';
+import HeroSection from '@/components/sections/directions/game/HeroSection';
+import StaticGradientLine from '@/components/UI/StaticGradientLine';
 
 const GameDevelopment = () => {
   return (
-    <section className="py-60">
-      <SectionContainer>
-        <h1 className="font-title text-title-4xl text-center">Game Development</h1>
-      </SectionContainer>
-    </section>
+    <>
+      <HeroSection />
+      <StaticGradientLine />
+    </>
   );
 };
 
