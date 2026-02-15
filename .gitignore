@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+firebase-debug.log
+firestore-debug.log
+src/app/docs/SERVER_DEV_CHECKLIST.md
