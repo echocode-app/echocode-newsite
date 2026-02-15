@@ -180,15 +180,8 @@ Environment policy:
 - Перевірка прав: `requirePermission(...)`
 - `admin` має повний доступ
 - `developer` має повний доступ у `development`, а також у non-dev за замовчуванням (`DEVELOPER_ACCESS_MODE=full`)
-- для безболісного переходу на read-only для `developer` достатньо перемкнути `DEVELOPER_ACCESS_MODE=readonly`
+- для переходу на read-only для `developer` достатньо перемкнути `DEVELOPER_ACCESS_MODE=readonly`
 - `manager` має доступ до бізнес-операцій, але без `admin.settings` та `audit.read`
-
-### Матриця доступів (поточний етап)
-
-Щоб уникнути плутанини, нижче розділено доступ на 2 рівні:
-
-- API-рівень (через бекенд і RBAC)
-- Firestore Client SDK rules-рівень (прямий доступ клієнта до Firestore)
 
 #### API-рівень (RBAC)
 
@@ -291,6 +284,39 @@ Environment policy:
 - draft контент читається лише `admin`
 - invalid schema блокується
 - immutable поля не можна змінити
+
+## Validation foundation for Forms Submissions (prepared)
+
+Єдиний контракт валідації:
+
+- `src/shared/validation/submissions.ts` (schema contract)
+- `src/server/submissions/validation.ts` (parser + draft builder)
+
+### Project form (`formType = project`)
+
+| Поле            | Обов'язкове | Валідація                                 |
+| --------------- | ----------- | ----------------------------------------- |
+| `firstName`     | ✅          | 2-20 символів, лише літери/пробіл/`'`/`-` |
+| `lastName`      | ✅          | 2-20 символів, лише літери/пробіл/`'`/`-` |
+| `email`         | ✅          | валідний email, max 30                    |
+| `needs`         | ❌          | якщо передано: 10-1000 символів           |
+| `attachment`    | ❌          | один файл, який проходить file schema      |
+
+### Candidate form (`formType = candidate`)
+
+| Поле          | Обов'язкове | Валідація                                        |
+| ------------- | ----------- | ------------------------------------------------ |
+| `cvFile`      | ✅          | document MIME, max 20MB, safe `uploads/...` path |
+| `profileUrl`  | ✅          | валідний `http/https` URL, max 2048              |
+
+### File constraints
+
+| Тип        | MIME                                        | Ліміт   |
+| ---------- | ------------------------------------------- | ------- |
+| `image`    | `jpeg/png/webp/gif/avif/bmp/tiff/heic/heif` | до 5MB  |
+| `document` | `pdf/doc/docx/rtf/odt/txt`                  | до 20MB |
+
+`buildSubmissionDraft(...)` нормалізує payload у стабільну server shape перед записом у БД.
 
 ## Ключові env-параметри (поточна ітерація)
 
