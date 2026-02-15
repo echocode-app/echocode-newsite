@@ -1,0 +1,204 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function hasRole(role) {
+      return isAuthenticated() && request.auth.token.role == role;
+    }
+
+    function isAdmin() {
+      return hasRole('admin');
+    }
+
+    function hasRequiredKeys(data, required) {
+      return data.keys().hasAll(required);
+    }
+
+    function hasOnlyKeys(data, allowed) {
+      return data.keys().hasOnly(allowed);
+    }
+
+    function optionalString(data, field) {
+      return !(field in data) || data[field] is string;
+    }
+
+    function optionalBool(data, field) {
+      return !(field in data) || data[field] is bool;
+    }
+
+    function optionalTimestamp(data, field) {
+      return !(field in data) || data[field] is timestamp;
+    }
+
+    function optionalList(data, field) {
+      return !(field in data) || data[field] is list;
+    }
+
+    function optionalMap(data, field) {
+      return !(field in data) || data[field] is map;
+    }
+
+    function isSubmissionStatus(status) {
+      return status in ['new', 'in_review', 'done', 'rejected'];
+    }
+
+    function isValidSubmissionShape(data) {
+      return hasRequiredKeys(data, ['createdAt', 'status', 'formType', 'email']) &&
+        hasOnlyKeys(data, [
+          'createdAt',
+          'updatedAt',
+          'status',
+          'formType',
+          'email',
+          'name',
+          'phone',
+          'company',
+          'message',
+          'attachments',
+          'source',
+          'metadata'
+        ]) &&
+        data.createdAt is timestamp &&
+        data.status is string &&
+        isSubmissionStatus(data.status) &&
+        data.formType is string &&
+        data.email is string &&
+        optionalTimestamp(data, 'updatedAt') &&
+        optionalString(data, 'name') &&
+        optionalString(data, 'phone') &&
+        optionalString(data, 'company') &&
+        optionalString(data, 'message') &&
+        optionalList(data, 'attachments') &&
+        optionalString(data, 'source') &&
+        optionalMap(data, 'metadata');
+    }
+
+    function isValidVacancyShape(data) {
+      return hasRequiredKeys(data, ['title', 'slug', 'isPublished', 'createdAt']) &&
+        hasOnlyKeys(data, [
+          'title',
+          'slug',
+          'isPublished',
+          'createdAt',
+          'updatedAt',
+          'location',
+          'employmentType',
+          'summary',
+          'description',
+          'tags',
+          'language'
+        ]) &&
+        data.title is string &&
+        data.slug is string &&
+        data.isPublished is bool &&
+        data.createdAt is timestamp &&
+        optionalTimestamp(data, 'updatedAt') &&
+        optionalString(data, 'location') &&
+        optionalString(data, 'employmentType') &&
+        optionalString(data, 'summary') &&
+        optionalString(data, 'description') &&
+        optionalList(data, 'tags') &&
+        optionalString(data, 'language');
+    }
+
+    function isValidPortfolioShape(data) {
+      return hasRequiredKeys(data, ['title', 'slug', 'createdAt']) &&
+        hasOnlyKeys(data, [
+          'title',
+          'slug',
+          'createdAt',
+          'updatedAt',
+          'summary',
+          'description',
+          'isPublished',
+          'stack',
+          'industry',
+          'coverImage',
+          'gallery'
+        ]) &&
+        data.title is string &&
+        data.slug is string &&
+        data.createdAt is timestamp &&
+        optionalTimestamp(data, 'updatedAt') &&
+        optionalString(data, 'summary') &&
+        optionalString(data, 'description') &&
+        optionalBool(data, 'isPublished') &&
+        optionalList(data, 'stack') &&
+        optionalString(data, 'industry') &&
+        optionalString(data, 'coverImage') &&
+        optionalList(data, 'gallery');
+    }
+
+    function isPubliclyReadableContent(data) {
+      return ('isPublished' in data) && data.isPublished is bool && data.isPublished == true;
+    }
+
+    /*
+     * Forms submissions are sensitive operational data.
+     * Only admins can read and manage submission documents.
+     */
+    match /submissions/{submissionId} {
+      allow read: if isAdmin();
+      allow create: if isAdmin() && isValidSubmissionShape(request.resource.data);
+      allow update: if isAdmin() &&
+        isValidSubmissionShape(request.resource.data) &&
+        request.resource.data.formType == resource.data.formType &&
+        request.resource.data.email == resource.data.email &&
+        (
+          (!('source' in resource.data) && !('source' in request.resource.data)) ||
+          (
+            ('source' in resource.data) &&
+            ('source' in request.resource.data) &&
+            request.resource.data.source == resource.data.source
+          )
+        );
+      allow delete: if isAdmin();
+    }
+
+    /*
+     * Public-facing content can be read by anyone.
+     * Mutations are restricted to admins only.
+     */
+    match /vacancies/{vacancyId} {
+      allow read: if isAdmin() || (resource != null && isPubliclyReadableContent(resource.data));
+      allow create: if isAdmin() && isValidVacancyShape(request.resource.data);
+      allow update: if isAdmin() &&
+        resource != null &&
+        request.resource != null &&
+        isValidVacancyShape(request.resource.data) &&
+        request.resource.data.slug == resource.data.slug;
+      allow delete: if isAdmin();
+    }
+
+    match /portfolio/{projectId} {
+      allow read: if isAdmin() || (resource != null && isPubliclyReadableContent(resource.data));
+      allow create: if isAdmin() && isValidPortfolioShape(request.resource.data);
+      allow update: if isAdmin() &&
+        resource != null &&
+        request.resource != null &&
+        isValidPortfolioShape(request.resource.data) &&
+        request.resource.data.slug == resource.data.slug;
+      allow delete: if isAdmin();
+    }
+
+    /*
+     * Internal smoke-check collection must never be writable from client SDK.
+     * Server-side Admin SDK bypasses rules and remains unaffected.
+     */
+    match /_internal_firebase_checks/{docId} {
+      allow read, write: if false;
+    }
+
+    /*
+     * Security baseline: deny all client-side reads/writes by default.
+     * Add explicit collection-level rules below as product requirements appear.
+     */
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
