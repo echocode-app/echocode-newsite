@@ -1,12 +1,12 @@
-import SectionContainer from '@/components/UI/section/SectionContainer';
+import HeroSection from '@/components/sections/directions/design/HeroSection';
+import StaticGradientLine from '@/components/UI/StaticGradientLine';
 
 const Design = () => {
   return (
-    <section className="py-60">
-      <SectionContainer>
-        <h1 className="font-title text-title-4xl text-center">Design</h1>
-      </SectionContainer>
-    </section>
+    <>
+      <HeroSection />
+      <StaticGradientLine />
+    </>
   );
 };
 
