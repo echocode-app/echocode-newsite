@@ -12,9 +12,12 @@
 - `curl http://localhost:3000/api/health`
 - `curl http://localhost:3000/api/internal/firebase-check`
 - `curl http://localhost:3000/api/admin/me`
+
 - `curl -i -H "Authorization: Bearer invalid-token" http://localhost:3000/api/admin/me`
 - `curl -i -H "Authorization: Bearer valid-token" http://localhost:3000/api/admin/me`
+
 - `npm run test:firestore:rules`
+- `npm run test:storage:rules`
 - `npm run check`
 
 7. Оновити документацію, якщо змінився контракт API або серверна поведінка
@@ -115,7 +118,8 @@
 - `extractIdToken(request)` витягує токен лише з `Authorization: Bearer <ID_TOKEN>`
 - `verifyIdToken(token)` виконує перевірку через Firebase Admin SDK (режим залежить від середовища)
 - `requireAuth(...)` повертає нормалізований auth context (`uid`, `email`, `claims`, `role`)
-- `withAdminApi(...)` примусово застосовує auth + admin access permission для `/api/admin/*`
+- `admin/me` виконує auth + bootstrap allowlist + permission check у фіксованому порядку:
+  спочатку bootstrap ролі (за allowlist), потім перевірка `admin.access`
 
 Environment policy:
 
@@ -154,6 +158,8 @@ Environment policy:
 
 - вимкнено в production
 - додатково керується env-прапорцем `INTERNAL_FIREBASE_CHECK_ENABLED`
+- у `development` доступ без auth (для швидкої локальної діагностики)
+- у non-dev додатково вимагає auth + `admin.access`
 - Firestore check: write/read/delete smoke cycle
 - Storage check опційний через `FIREBASE_CHECK_STORAGE`
 
@@ -238,6 +244,49 @@ Environment policy:
 
 - анонімний доступ блокується для чутливих даних (`submissions`, internal collection)
 - non-admin не може записувати в `submissions`/`vacancies`/`portfolio`
+
+## Storage Rules (v1 ready for corporate Firebase rollout)
+
+Файли реалізації:
+
+- `storage.rules`
+- `firebase.json`
+- `tests/storage.rules.test.mjs`
+
+Поточна модель доступу:
+
+- `uploads/portfolio/{projectId}/{fileName}`
+- `read`: публічний
+- `create`: `admin` / `developer` / `manager`
+- `replace/delete`: тільки `admin` / `developer`
+- тільки зображення, максимум `5MB`
+
+- `uploads/vacancies/{vacancyId}/{fileName}`
+- `read`: публічний
+- `create`: `admin` / `developer` / `manager`
+- `replace/delete`: тільки `admin` / `developer`
+- тільки зображення, максимум `5MB`
+
+- `uploads/submissions/{submissionId}/{fileName}` (CV/файли з форм)
+- `read`: тільки staff-ролі (`admin` / `developer` / `manager`)
+- `create`: `admin` / `developer` / `manager`
+- `replace/delete`: тільки `admin` / `developer`
+- тільки документи, максимум `20MB`
+
+- fallback `/{allPaths=**}`: deny all
+
+Обмеження MIME типів:
+
+- images: `jpeg`, `png`, `webp`, `gif`, `avif`, `bmp`, `tiff`, `heic`, `heif`
+- documents: `pdf`, `doc`, `docx`, `rtf`, `odt`, `txt`
+
+Що перевірено тестами:
+
+- unauthorized uploads блокуються
+- manager може створювати, але не може replace/delete
+- admin/developer можуть replace/delete
+- size/type restrictions працюють (image `5MB`, docs `20MB`)
+- приватність submission файлів та публічність portfolio/vacancy зображень дотримані
 - публічне читання дозволене лише для published контенту
 - draft контент читається лише `admin`
 - invalid schema блокується

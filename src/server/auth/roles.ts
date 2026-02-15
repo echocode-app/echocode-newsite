@@ -13,9 +13,12 @@ export type Permission =
   | 'audit.read';
 
 export const ADMIN_ACCESS_PERMISSION = 'admin.access';
-const MANAGER_DENIED_PERMISSIONS: readonly Exclude<Permission, '*'>[] = [
-  'admin.settings',
-  'audit.read',
+const MANAGER_ALLOWED_PERMISSIONS: readonly Exclude<Permission, '*'>[] = [
+  'admin.access',
+  'submissions.read',
+  'submissions.updateStatus',
+  'vacancies.write',
+  'portfolio.write',
 ];
 
 const DEVELOPER_READONLY_PERMISSIONS: readonly Permission[] = [
@@ -35,8 +38,8 @@ const developerPermissions = resolveDeveloperPermissions();
 export const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
   admin: ['*'],
   developer: developerPermissions,
-  // Manager has full business access except explicit security/administration exclusions.
-  manager: ['*'],
+  // Manager has explicit business permissions and cannot auto-inherit future sensitive scopes.
+  manager: MANAGER_ALLOWED_PERMISSIONS,
 };
 
 /** Runtime guard for role claims coming from external token/user payloads */
@@ -49,10 +52,6 @@ export function hasPermission(
   role: Role,
   permission: Exclude<Permission, '*'>,
 ): boolean {
-  if (role === 'manager' && MANAGER_DENIED_PERMISSIONS.includes(permission)) {
-    return false;
-  }
-
   const permissions = ROLE_PERMISSIONS[role];
   return permissions.includes('*') || permissions.includes(permission);
 }
