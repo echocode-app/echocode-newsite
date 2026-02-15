@@ -1,0 +1,27 @@
+[
+  {
+    "title": "01. STRATEGY",
+    "subTitle": "Analysis",
+    "desc": "Technical audit, competitor research, and product Roadmap development."
+  },
+  {
+    "title": "02. UX／UI",
+    "subTitle": "Design",
+    "desc": "Creating interfaces focused on Retention and seamless user interaction."
+  },
+  {
+    "title": "03. CODE",
+    "subTitle": "Development",
+    "desc": "Native code (Swift/Kotlin) using modern clean architecture patterns."
+  },
+  {
+    "title": "04. DEVOPS",
+    "subTitle": "Integration",
+    "desc": "Creating interfaces focused on Retention and seamless user interaction."
+  },
+  {
+    "title": "05. GROWTH",
+    "subTitle": "Release ＆ ASO",
+    "desc": "Creating interfaces focused on Retention and seamless user interaction."
+  }
+]

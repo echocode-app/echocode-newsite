@@ -9,9 +9,9 @@ const PartnerList = () => {
     <motion.ul
       animate={{ x: ['0%', '-50%'] }}
       transition={{ ease: 'linear', duration: 40, repeat: Infinity }}
-      className="flex items-center"
+      className="flex items-center gap-10"
     >
-      {[...Array(16)].map((_, i) => (
+      {[...Array(16), ...Array(16)].map((_, i) => (
         <PartnerItem key={i} />
       ))}
     </motion.ul>

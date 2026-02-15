@@ -1,0 +1,9 @@
+[
+  { "image": "/images/services/firebase.png", "desc": "Firebase" },
+  { "image": "/images/services/fluer.png", "desc": "Fluer" },
+  { "image": "/images/services/adapty.png", "desc": "Adapty" },
+  { "image": "/images/services/revenue.png", "desc": "Revenue" },
+  { "image": "/images/services/apphud.png", "desc": "AppHud" },
+  { "image": "/images/services/onesignal.png", "desc": "OneSignal" },
+  { "image": "/images/services/adjust.png", "desc": "Adjust" }
+]

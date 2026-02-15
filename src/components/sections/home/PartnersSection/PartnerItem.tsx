@@ -8,25 +8,19 @@ const PartnerItem = () => {
     <li
       className="
       shrink-0
-      w-33 h-20 mx-6
+      w-33 h-20 
       flex items-center justify-center
       "
     >
       <motion.div
         initial={{ scale: 1 }}
-        whileInView={{ scale: 1.54 }}
+        whileInView={{ scale: 1.4 }}
         viewport={{
           once: false,
-          margin: '-46% -56%',
+          margin: '0px -50% 0px -50%',
         }}
-        transition={{ duration: 3, ease: [0.4, 0, 0.2, 1] }}
-        className="
-        w-full h-full
-        bg-gray7 rounded-secondary
-        backdrop-blur-[6px]
-        flex items-center justify-center
-        transform-gpu
-        "
+        transition={{ duration: 0.8, ease: 'easeInOut' }}
+        className="w-full h-full bg-gray7 rounded-secondary flex items-center justify-center"
       >
         <div className="relative h-6 w-30">
           <Image src="/images/partners/keen.svg" alt="Keen Ethics" fill />
