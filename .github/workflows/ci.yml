@@ -4,8 +4,11 @@ on:
   push:
     branches:
       - main
-      - master
+      - develop
   pull_request:
+    branches:
+      - main
+      - develop
 
 permissions:
   contents: read
@@ -14,6 +17,8 @@ jobs:
   check:
     name: Check
     runs-on: ubuntu-latest
+    env:
+      NODE_ENV: test
     steps:
       - name: Checkout
         uses: actions/checkout@v4
