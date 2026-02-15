@@ -7,13 +7,18 @@
 3. Запустити обов'язкову перевірку: `npm run check`
 4. Якщо змінювалися API-роути, перевірити локально success/error сценарії
 5. Якщо змінювалися auth/permissions/errors, окремо перевірити 400/401/403/500/503 сценарії
+6. Якщо змінювалися Firebase Rules (`firestore.rules` / `storage.rules`), перевірити `firebase.json` та deny-by-default політику
 
 - `curl http://localhost:3000/api/health`
 - `curl http://localhost:3000/api/internal/firebase-check`
 - `curl http://localhost:3000/api/admin/me`
+- `curl -i -H "Authorization: Bearer invalid-token" http://localhost:3000/api/admin/me`
+- `curl -i -H "Authorization: Bearer valid-token" http://localhost:3000/api/admin/me`
+- `npm run test:firestore:rules`
+- `npm run check`
 
-6. Оновити документацію, якщо змінився контракт API або серверна поведінка
-7. Комітити тільки після повністю успішного `npm run check`
+7. Оновити документацію, якщо змінився контракт API або серверна поведінка
+8. Комітити тільки після повністю успішного `npm run check`
 
 ## Що вже реалізовано у серверному фундаменті
 
@@ -116,7 +121,8 @@ Environment policy:
 
 - `development`: verification без revocation check (`checkRevoked=false`) для швидкого локального циклу
 - `staging/production`: verification з revocation check (`checkRevoked=true`)
-- `developer` role має розширені права лише у `development`; у non-dev доступ обмежений
+- `developer` роль має повний доступ у `development`
+- у non-dev режим керується `DEVELOPER_ACCESS_MODE` (`full` або `readonly`, поточний дефолт: `full`)
 
 ### Pagination contract
 
@@ -167,11 +173,80 @@ Environment policy:
 - Permissions: централізовані в `ROLE_PERMISSIONS`
 - Перевірка прав: `requirePermission(...)`
 - `admin` має повний доступ
-- `developer` має повний доступ лише у `development` середовищі
+- `developer` має повний доступ у `development`, а також у non-dev за замовчуванням (`DEVELOPER_ACCESS_MODE=full`)
+- для безболісного переходу на read-only для `developer` достатньо перемкнути `DEVELOPER_ACCESS_MODE=readonly`
+- `manager` має доступ до бізнес-операцій, але без `admin.settings` та `audit.read`
+
+### Матриця доступів (поточний етап)
+
+Щоб уникнути плутанини, нижче розділено доступ на 2 рівні:
+
+- API-рівень (через бекенд і RBAC)
+- Firestore Client SDK rules-рівень (прямий доступ клієнта до Firestore)
+
+#### API-рівень (RBAC)
+
+| Дія / доступ                                           | Anonymous | Manager | Developer        | Admin |
+| ------------------------------------------------------ | --------- | ------- | ---------------- | ----- |
+| Доступ до admin API (`admin.access`)                   | ❌        | ✅      | ✅ (`full` mode) | ✅    |
+| Операційні write-дії (submissions/vacancies/portfolio) | ❌        | ✅      | ✅ (`full` mode) | ✅    |
+| `admin.settings`                                       | ❌        | ❌      | ✅ (`full` mode) | ✅    |
+| `audit.read` (логування дій в адмінпанелі)             | ❌        | ❌      | ✅ (`full` mode) | ✅    |
+
+#### Firestore Client SDK rules-рівень
+
+| Ресурс / операція                           | Anonymous | Manager | Developer | Admin |
+| ------------------------------------------- | --------- | ------- | --------- | ----- |
+| `submissions/{id}` read/write               | ❌        | ❌      | ❌        | ✅    |
+| `vacancies/{id}` read (published)           | ✅        | ✅      | ✅        | ✅    |
+| `vacancies/{id}` read (draft)               | ❌        | ❌      | ❌        | ✅    |
+| `vacancies/{id}` write                      | ❌        | ❌      | ❌        | ✅    |
+| `portfolio/{id}` read (published)           | ✅        | ✅      | ✅        | ✅    |
+| `portfolio/{id}` read (draft)               | ❌        | ❌      | ❌        | ✅    |
+| `portfolio/{id}` write                      | ❌        | ❌      | ❌        | ✅    |
+| `_internal_firebase_checks/{id}` read/write | ❌        | ❌      | ❌        | ❌    |
+
+`Anonymous` = неавтентифікований запит (без Firebase ID token). Це публічний відвідувач або будь-який клієнт без валідної авторизації.
+
+## Firestore Rules (finalized for current stage)
+
+Файли реалізації:
+
+- `firestore.rules`
+- `firestore.indexes.json`
+- `firebase.json`
+- `tests/firestore.rules.test.mjs`
+
+Поточна матриця доступів:
+
+- `submissions/{id}`:
+- `read/write` тільки для `admin`
+- schema validation: required/allowed keys + базова типізація полів
+- immutable поля: `formType`, `email`, `source`
+- `vacancies/{id}`:
+- `read` для `admin` або публічно лише якщо `isPublished == true`
+- `write` тільки для `admin`
+- immutable поле: `slug`
+- `portfolio/{id}`:
+- `read` для `admin` або публічно лише якщо `isPublished == true`
+- `write` тільки для `admin`
+- immutable поле: `slug`
+- `_internal_firebase_checks/{id}`: повний deny для client SDK
+- fallback `/{document=**}`: deny all
+
+Що перевірено тестами:
+
+- анонімний доступ блокується для чутливих даних (`submissions`, internal collection)
+- non-admin не може записувати в `submissions`/`vacancies`/`portfolio`
+- публічне читання дозволене лише для published контенту
+- draft контент читається лише `admin`
+- invalid schema блокується
+- immutable поля не можна змінити
 
 ## Ключові env-параметри (поточна ітерація)
 
 - `NODE_ENV`
+- `DEVELOPER_ACCESS_MODE`
 - `API_VERSION`
 - `FIREBASE_PROJECT_ID`
 - `FIREBASE_CLIENT_EMAIL`

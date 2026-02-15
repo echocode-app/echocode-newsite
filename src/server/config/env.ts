@@ -8,6 +8,7 @@ type RequiredEnv = {
 
 type OptionalEnv = {
   nodeEnv: NodeEnv;
+  developerAccessMode: 'full' | 'readonly';
   adminBootstrapEmails: string[];
   apiVersion: string;
   firebaseCheckStorage: boolean;
@@ -29,6 +30,7 @@ class ConfigurationError extends Error {
 
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
+  DEVELOPER_ACCESS_MODE: z.enum(['full', 'readonly']).default('full'),
   FIREBASE_PROJECT_ID: z.string().trim().min(1).optional(),
   FIREBASE_CLIENT_EMAIL: z.string().trim().email().optional(),
   FIREBASE_PRIVATE_KEY: z.string().trim().min(1).optional(),
@@ -95,6 +97,7 @@ function parseEnvironment(raw: NodeJS.ProcessEnv): Env {
   return {
     firebaseCredentialSource: hasAllFirebaseCredential ? 'env' : 'adc',
     nodeEnv: parsed.data.NODE_ENV,
+    developerAccessMode: parsed.data.DEVELOPER_ACCESS_MODE,
     firebaseProjectId: parsed.data.FIREBASE_PROJECT_ID,
     firebaseClientEmail: parsed.data.FIREBASE_CLIENT_EMAIL,
     firebasePrivateKey: parsed.data.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
@@ -116,6 +119,7 @@ export const requiredEnv: RequiredEnv = {
 };
 export const optionalEnv: OptionalEnv = {
   nodeEnv: env.nodeEnv,
+  developerAccessMode: env.developerAccessMode,
   adminBootstrapEmails: env.adminBootstrapEmails,
   apiVersion: env.apiVersion,
   firebaseCheckStorage: env.firebaseCheckStorage,
