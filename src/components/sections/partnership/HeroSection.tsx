@@ -5,17 +5,18 @@ import SectionContainer from '@/components/UI/section/SectionContainer';
 
 const HeroSection = () => {
   return (
-    <section className="pt-45 pb-2">
+    <section className="pt-32 md:pb-11.5">
       <SectionContainer>
         <div className="flex flex-col md:flex-row items-center justify-between">
-          <div className="max-w-160">
+          <div className="max-w-160 mb-2 md:mb-0">
             <PageTitle>INVESTING IN YOUR GROWTH</PageTitle>
           </div>
-          <div className="relative w-50 h-50 md:w-79.5 md:min-w-79.5 md:h-79.5">
+          <div className="relative w-50 h-50  md:min-w-70 md:h-69">
             <Image
               src={'/images/rabbits/hero/partnership.png'}
               alt="Partnership"
               fill
+              priority
               className="object-cover -scale-x-100"
             />
           </div>
@@ -24,5 +25,5 @@ const HeroSection = () => {
     </section>
   );
 };
-
+// md:w-79.5
 export default HeroSection;

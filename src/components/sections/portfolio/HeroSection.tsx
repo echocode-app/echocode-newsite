@@ -5,7 +5,7 @@ import SectionContainer from '@/components/UI/section/SectionContainer';
 
 const HeroSection = () => {
   return (
-    <section className="pt-45 md:pt-47.5  md:pb-9.75">
+    <section className="pt-31 md:pt-33.5  md:pb-9.75">
       <SectionContainer>
         <div className="flex flex-col md:flex-row items-center justify-between">
           <div className="max-w-170 mb-4">
@@ -16,6 +16,7 @@ const HeroSection = () => {
               src={'/images/rabbits/hero/portfolio.png'}
               alt="Portfolio"
               fill
+              priority
               className="object-cover"
             />
           </div>
