@@ -17,13 +17,16 @@ const HeroSection = () => {
             </p>
           </div>
           <div className="relative w-50 h-50 md:w-79.5 md:h-79.5">
-            <Image
-              priority
-              src={'/images/rabbits/hero/mobile.png'}
-              alt="Mobile Dev"
-              fill
-              className="object-cover -scale-x-100"
-            />
+            <picture>
+              <source media="(min-width: 768px)" srcSet="/images/rabbits/hero/desktop.png" />
+              <Image
+                priority
+                src="/images/rabbits/hero/mobile.png"
+                alt="Mobile Dev"
+                fill
+                className="object-cover -scale-x-100"
+              />
+            </picture>
           </div>
         </div>
       </SectionContainer>
