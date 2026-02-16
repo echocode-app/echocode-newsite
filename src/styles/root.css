@@ -133,3 +133,33 @@
     background-image: var(--background-image-main-gradient);
   }
 }
+
+/* ===== Coming Soon ===== */
+
+.title-gradient {
+  font-family: var(--font-wadik), sans-serif;
+  font-weight: 700;
+  background: var(--background-image-main-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.ellipse-blur {
+  left: calc((100vw - min(1400px, 100vw)) / 2 - 168px);
+  bottom: -120px;
+  width: 394px;
+  height: 518px;
+  opacity: 0.5;
+  transform: rotate(-30deg);
+  background: var(--background-image-main-gradient);
+  filter: blur(210px);
+}
+
+.radial-shadow {
+  background: radial-gradient(96.31% 282.68% at 76.25% 66.77%, rgba(0, 0, 0, 0) 0%, #000 100%);
+}
+
+video {
+  filter: brightness(0.9) contrast(1.08) saturate(1.05);
+}
