@@ -19,7 +19,7 @@ const PartnersSection = () => {
             alt="Partners"
             className="object-contain"
           />
-          <PartnersList></PartnersList>
+          <PartnersList />
         </div>
       </SectionContainer>
     </section>

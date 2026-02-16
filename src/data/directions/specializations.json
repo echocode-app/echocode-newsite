@@ -1,0 +1,22 @@
+[
+  {
+    "title": "ECOSYSTEMS",
+    "subTitle": "Subscription SaaS",
+    "desc": "Building subscription-based systems. From Paywall optimization to LTV analytical service integration."
+  },
+  {
+    "title": "OPTIMIZATION",
+    "subTitle": "Design",
+    "desc": "Tools built for speed. Memory optimization, offline modes, and real-time big data processing."
+  },
+  {
+    "title": "SERVICES",
+    "subTitle": "Super-Apps",
+    "desc": "Multi-module solutions with complex logic that maintain interface speed and intuitiveness."
+  },
+  {
+    "title": "INTELLIGENCE",
+    "subTitle": "AI ＆ Data Intelligence",
+    "desc": "Implementing ML models and real-time data processing for hyper-personalized user experiences."
+  }
+]
