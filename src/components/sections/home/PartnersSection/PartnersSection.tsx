@@ -1,8 +1,11 @@
+import Image from 'next/image';
+
+import partners from '@/data/partners.json';
+
 import SectionContainer from '@/components/UI/section/SectionContainer';
 import SectionGradientLine from '@/components/UI/section/SectionGradientLine';
 import SectionTitle from '@/components/UI/section/SectionTitle';
 import PartnersList from './PartnerList';
-import Image from 'next/image';
 
 const PartnersSection = () => {
   return (
@@ -17,14 +20,9 @@ const PartnersSection = () => {
             src={'/UI/backgrounds/partners-bg.png'}
             fill
             alt="Partners"
-            className="object-cover"
+            className="object-cover rounded-secondary"
           />
-          <PartnersList />
-          {/* <div
-            className="absolute inset-0 pointer-events-none z-20 h-full 
-           md:bg-[linear-gradient(to_right,black_0%,transparent_1%,transparent_99%,black_100%)]
-           bg-[linear-gradient(to_right,black_0%,transparent_15%,transparent_85%,black_100%)]"
-          /> */}
+          <PartnersList list={partners} />
         </div>
       </SectionContainer>
     </section>
