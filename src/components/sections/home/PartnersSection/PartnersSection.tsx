@@ -6,7 +6,7 @@ import Image from 'next/image';
 
 const PartnersSection = () => {
   return (
-    <section className="pb-25">
+    <section className="pb-10 md:pb-25">
       <SectionGradientLine height="2" />
       <SectionContainer>
         <div className="mb-10">
@@ -17,9 +17,14 @@ const PartnersSection = () => {
             src={'/UI/backgrounds/partners-bg.png'}
             fill
             alt="Partners"
-            className="object-contain"
+            className="object-cover"
           />
           <PartnersList />
+          {/* <div
+            className="absolute inset-0 pointer-events-none z-20 h-full 
+           md:bg-[linear-gradient(to_right,black_0%,transparent_1%,transparent_99%,black_100%)]
+           bg-[linear-gradient(to_right,black_0%,transparent_15%,transparent_85%,black_100%)]"
+          /> */}
         </div>
       </SectionContainer>
     </section>
