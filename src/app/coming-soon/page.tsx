@@ -36,6 +36,27 @@ export default function ComingSoon() {
     return () => mediaQuery.removeEventListener('change', updateText);
   }, []);
 
+  useEffect(() => {
+    const html = document.documentElement;
+    const body = document.body;
+    const prevHtmlOverflow = html.style.overflow;
+    const prevHtmlOverscroll = html.style.overscrollBehaviorY;
+    const prevBodyOverflow = body.style.overflow;
+    const prevBodyOverscroll = body.style.overscrollBehaviorY;
+
+    html.style.overflow = 'hidden';
+    html.style.overscrollBehaviorY = 'none';
+    body.style.overflow = 'hidden';
+    body.style.overscrollBehaviorY = 'none';
+
+    return () => {
+      html.style.overflow = prevHtmlOverflow;
+      html.style.overscrollBehaviorY = prevHtmlOverscroll;
+      body.style.overflow = prevBodyOverflow;
+      body.style.overscrollBehaviorY = prevBodyOverscroll;
+    };
+  }, []);
+
   /* Typewriter */
   useEffect(() => {
     const startDelay = setTimeout(() => setPageReady(true), 250);
@@ -57,8 +78,8 @@ export default function ComingSoon() {
   const year = new Date().getFullYear();
 
   return (
-      <main className="relative min-h-screen w-full overflow-hidden bg-black text-white">
-        {/* VIDEO BACKGROUND */}
+    <main className="relative h-svh min-h-svh w-full overflow-hidden overscroll-none bg-black text-white">
+      {/* VIDEO BACKGROUND */}
       <div className="fixed inset-0 z-0 flex items-center justify-center overflow-hidden lg:items-end lg:justify-center">
         <div
           className="
@@ -73,7 +94,7 @@ export default function ComingSoon() {
             lg:justify-center
           "
         >
-          <div className="relative mx-auto w-full lg:max-w-240 xl:max-w-280">
+          <div className="relative mx-auto w-full lg:max-w-200 xl:max-w-240">
             <video
               className="h-auto max-h-screen w-full object-contain"
               autoPlay
