@@ -1,3 +1,3 @@
 # echocode-newsite
 
-# https://echocode-newsite.vercel.app/
+# https://www.echocode.digital/

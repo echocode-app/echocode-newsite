@@ -73,7 +73,7 @@ export default function ComingSoon() {
             lg:justify-center
           "
         >
-          <div className="relative mx-auto w-full max-w-300">
+          <div className="relative mx-auto w-full lg:max-w-240 xl:max-w-280">
             <video
               className="h-auto max-h-screen w-full object-contain"
               autoPlay
