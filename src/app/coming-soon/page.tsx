@@ -59,7 +59,7 @@ export default function ComingSoon() {
 
   /* Typewriter */
   useEffect(() => {
-    const startDelay = setTimeout(() => setPageReady(true), 250);
+    const startDelay = setTimeout(() => setPageReady(true), 300);
 
     let i = 0;
     setDisplayedText('');
@@ -67,7 +67,7 @@ export default function ComingSoon() {
       setDisplayedText(fullText.slice(0, i + 1));
       i++;
       if (i === fullText.length) clearInterval(interval);
-    }, 100);
+    }, 80);
 
     return () => {
       clearInterval(interval);
@@ -94,7 +94,7 @@ export default function ComingSoon() {
             lg:justify-center
           "
         >
-          <div className="relative mx-auto w-full lg:max-w-200 xl:max-w-240">
+          <div className="relative mx-auto w-full lg:max-w-220 xl:max-w-260">
             <video
               className="h-auto max-h-screen w-full object-contain"
               autoPlay
@@ -132,7 +132,7 @@ export default function ComingSoon() {
         `}
       >
         <div className="w-full text-center md:text-left">
-          <h1 className="title-gradient whitespace-pre-line text-[clamp(36px,6vw,70px)] leading-[1.1]">
+          <h1 className="title-gradient whitespace-pre-line text-[clamp(36px,6vw,60px)] leading-[1.1]">
             {displayedText}
           </h1>
         </div>
