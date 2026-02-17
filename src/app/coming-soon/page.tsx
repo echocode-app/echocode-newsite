@@ -19,14 +19,29 @@ const socialLinks: SocialLink[] = [
 export default function ComingSoon() {
   const [displayedText, setDisplayedText] = useState('');
   const [pageReady, setPageReady] = useState(false);
+  const [fullText, setFullText] = useState('THERE WILL BE\nMAGIC SOON...');
 
-  const fullText = 'THERE WILL BE\nMAGIC SOON...';
+  useEffect(() => {
+    const desktopText = 'THERE WILL BE\nMAGIC SOON...';
+    const mobileText = 'THERE WILL BE MAGIC SOON...';
+    const mediaQuery = window.matchMedia('(min-width: 1024px)');
+
+    const updateText = () => {
+      setFullText(mediaQuery.matches ? desktopText : mobileText);
+    };
+
+    updateText();
+    mediaQuery.addEventListener('change', updateText);
+
+    return () => mediaQuery.removeEventListener('change', updateText);
+  }, []);
 
   /* Typewriter */
   useEffect(() => {
     const startDelay = setTimeout(() => setPageReady(true), 250);
 
     let i = 0;
+    setDisplayedText('');
     const interval = setInterval(() => {
       setDisplayedText(fullText.slice(0, i + 1));
       i++;
@@ -37,7 +52,7 @@ export default function ComingSoon() {
       clearInterval(interval);
       clearTimeout(startDelay);
     };
-  }, []);
+  }, [fullText]);
 
   const year = new Date().getFullYear();
 
@@ -71,6 +86,7 @@ export default function ComingSoon() {
             >
               <source src="/videos/coming-soon.mp4" type="video/mp4" />
             </video>
+            <div className="pointer-events-none absolute inset-0 hidden lg:block video-edge-mask" />
           </div>
         </div>
       </div>
@@ -87,7 +103,7 @@ export default function ComingSoon() {
           relative z-30
           mx-auto flex min-h-screen w-full max-w-350 flex-col
           justify-start 
-          px-6 md:px-8
+          px-8 md:px-12
           pt-16 md:pt-20
           lg:px-20 
           transition-opacity duration-700
