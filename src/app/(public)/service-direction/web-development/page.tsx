@@ -3,6 +3,7 @@ import StaticGradientLine from '@/components/UI/StaticGradientLine';
 import StrategySection from '@/components/sections/directions/web/StrategySection';
 import CoreSection from '@/components/sections/directions/web/CoreSection';
 import EngineeringSection from '@/components/sections/directions/web/EngineeringSection';
+import DevelopmentSection from '@/components/sections/directions/web/DevelopmentSection';
 
 const WebDevelopment = () => {
   return (
@@ -12,6 +13,7 @@ const WebDevelopment = () => {
       <StrategySection />
       <CoreSection />
       <EngineeringSection />
+      <DevelopmentSection />
     </>
   );
 };
