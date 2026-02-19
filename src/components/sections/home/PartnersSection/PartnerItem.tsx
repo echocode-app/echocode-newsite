@@ -17,7 +17,7 @@ const PartnerItem = ({ image, desc, scale }: PartnerItemProps) => {
     <motion.li
       initial={{ scale: 1 }}
       whileInView={{ scale: isMobile ? 1.2 : 1.4 }}
-      viewport={{ once: false, margin: '0px -49% 0px -51%' }}
+      viewport={{ once: false, margin: '0px -51% 0px -49%' }}
       transition={{ duration: 1, ease: 'easeOut' }}
       className="shrink-0 w-33  md:w-33 h-20 mr-6 md:mr-10 rounded-secondary flex items-center justify-center
              bg-gray7 backdrop-blur-[6px] relative"

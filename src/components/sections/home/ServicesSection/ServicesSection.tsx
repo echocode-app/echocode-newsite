@@ -19,9 +19,9 @@ const ServicesSection = () => {
           evolves with the market trends.
         </p>
         <div className="mb-4">
-          <ServiceList list={services} />
+          <ServiceList list={services} directionReverse={true} />
         </div>
-        <ServiceList list={servicesReverse} directionReverse={true} />
+        <ServiceList list={servicesReverse} />
       </SectionContainer>
     </section>
   );

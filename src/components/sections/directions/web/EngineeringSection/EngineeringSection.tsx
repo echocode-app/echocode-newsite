@@ -1,0 +1,31 @@
+import technologies from '@/data/directions/technologies.json';
+
+import EngineeringList from './EngineeringList';
+import EngineeringImage from './EngineeringImage';
+import CarouselList from '../../components/CarouselList';
+import SectionContainer from '@/components/UI/section/SectionContainer';
+import SectionGradientLine from '@/components/UI/section/SectionGradientLine';
+import SectionTitle from '@/components/UI/section/SectionTitle';
+
+const EngineeringSection = () => {
+  return (
+    <section className="mb-9">
+      <SectionGradientLine height="1" />
+      <SectionContainer>
+        <div className="mb-2.5">
+          <SectionTitle>ENGINEERING STANDARDS</SectionTitle>
+        </div>
+        <p className="mb-10 text-main-sm">
+          {"WE DON'T JUST BUILD APPLICATIONS; WE BUILD DIGITAL FORTRESSES."}
+        </p>
+        <div className="flex flex-col lg:flex-row items-center lg:justify-between  gap-6 lg:gap-0 mb-10">
+          <EngineeringImage />
+          <EngineeringList />
+        </div>
+        <CarouselList list={technologies} />
+      </SectionContainer>
+    </section>
+  );
+};
+
+export default EngineeringSection;
