@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import SolutionItem from '../../components/SolutionItem';
 
 import solutions from '@/data/directions/solutions.json';
@@ -6,7 +7,12 @@ const SolutionList = () => {
   return (
     <ul className="max-w-141 flex flex-col gap-6">
       <li className="flex flex-col gap-3 py-3">
-        <h3 className="font-title">􀇻 Technology Stack</h3>
+        <div className="flex gap-2">
+          <div className="relative w-5.5 h-6">
+            <Image src={'/UI/check.svg'} alt="Check" fill />
+          </div>
+          <h3 className="font-title">Technology Stack</h3>
+        </div>
         <p className="text-main-sm text-gray75">
           Development and maintenance of systems of any complexity. We create infrastructure that
           withstands peak loads and ensures seamless{' '}

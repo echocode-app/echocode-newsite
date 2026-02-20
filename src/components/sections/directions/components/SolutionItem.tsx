@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 interface SolutionItemProps {
   title: string;
   desc: string;
@@ -7,7 +9,12 @@ interface SolutionItemProps {
 const SolutionItem = ({ title, desc, technologies }: SolutionItemProps) => {
   return (
     <li className="flex flex-col gap-3 py-3">
-      <h3 className="font-title">{title}</h3>
+      <div className="flex gap-2">
+        <div className="relative w-5.5 h-6">
+          <Image src={'/UI/check.svg'} alt="Check" fill />
+        </div>
+        <h3 className="font-title">{title}</h3>
+      </div>
       <p className="text-main-sm text-gray75">{desc}</p>
       <ul className="flex gap-3 text-accent text-main-sm justify-end">
         {technologies.map((item, i) => (
