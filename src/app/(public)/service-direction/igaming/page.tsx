@@ -1,3 +1,4 @@
+import DominationSection from '@/components/sections/directions/igaming/DominationSection';
 import FoundationSection from '@/components/sections/directions/igaming/FoundationSection';
 import HeroSection from '@/components/sections/directions/igaming/HeroSection';
 import SolutionsSection from '@/components/sections/directions/igaming/SolutionsSection';
@@ -10,6 +11,7 @@ const IGaming = () => {
       <StaticGradientLine />
       <SolutionsSection />
       <FoundationSection />
+      <DominationSection />
     </>
   );
 };
