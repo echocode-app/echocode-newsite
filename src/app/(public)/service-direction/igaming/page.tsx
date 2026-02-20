@@ -1,4 +1,5 @@
 import HeroSection from '@/components/sections/directions/igaming/HeroSection';
+import SolutionsSection from '@/components/sections/directions/igaming/SolutionsSection';
 import StaticGradientLine from '@/components/UI/StaticGradientLine';
 
 const IGaming = () => {
@@ -6,6 +7,7 @@ const IGaming = () => {
     <>
       <HeroSection />
       <StaticGradientLine />
+      <SolutionsSection />
     </>
   );
 };
